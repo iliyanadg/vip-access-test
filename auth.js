@@ -46,7 +46,9 @@ async function validateVipToken() {
       null;
 
     // 2) se è "Telegram" o roba non valida, non la usiamo
-    const vipCode = looksLikeVipCode(vipFromWorker) ? vipFromWorker.trim().toUpperCase() : null;
+    const vipCode = looksLikeVipCode(vipFromWorker)
+      ? vipFromWorker.trim().toUpperCase()
+      : null;
 
     return { ok: true, vip: vipCode };
   } catch {
@@ -58,7 +60,8 @@ function forceLogout() {
   sessionStorage.removeItem("vip_token");
   sessionStorage.removeItem("vip_code");
   sessionStorage.removeItem("vip_info");
-  window.location.replace("/");
+  // ✅ RELATIVO (GitHub Pages subfolder-safe)
+  window.location.replace("./index.html");
 }
 
 // Funzione globale usata da archive / gallery / video / foto
