@@ -1,6 +1,6 @@
 // script.js — login VIP
 // ✅ 1) login con CODICE VIP (Worker)
-// ✅ 2) Telegram: gestito dal widget (Soluzione A) in index.html
+// ✅ 2) Telegram: gestito dal widget in index.html
 
 const WORKER_URL = "https://divine-silence-8c09vip-access-verify.ilidoncheva.workers.dev";
 
@@ -29,7 +29,7 @@ async function verifyCode() {
     return;
   }
 
-  btn && (btn.disabled = true);
+  if (btn) btn.disabled = true;
   setStatus("Verifico…", true);
 
   try {
@@ -57,7 +57,9 @@ async function verifyCode() {
       sessionStorage.setItem("vip_code", code);
 
       setStatus("✅ Accesso completato. Redirect…", true);
-      window.location.replace("/archive.html");
+
+      // ✅ IMPORTANTISSIMO su GitHub Pages in cartella:
+      window.location.replace("./archive.html");
       return;
     }
 
@@ -66,7 +68,7 @@ async function verifyCode() {
     console.error(e);
     setStatus("❌ Errore di connessione.", false);
   } finally {
-    btn && (btn.disabled = false);
+    if (btn) btn.disabled = false;
   }
 }
 
