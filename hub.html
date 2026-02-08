@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>VIP - Hub</title>
+
+  <script>
+    if (sessionStorage.getItem("vip_ok") !== "1") {
+      window.location.replace("/");
+    }
+  </script>
+
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <main class="wrap">
+    <h1>ARCHIVIO VIP</h1>
+    <p class="sub">Scegli cosa vuoi vedere.</p>
+
+    <div class="hub">
+      <a href="/photos.html">📸 FOTO VIP</a>
+      <a href="/videos.html">🎥 VIDEO VIP</a>
+    </div>
+
+    <button class="logout" id="logoutBtn" type="button">Esci</button>
+  </main>
+
+  <script>
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      sessionStorage.removeItem("vip_ok");
+      window.location.replace("/");
+    });
+  </script>
+</body>
+</html>

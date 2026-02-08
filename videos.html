@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>VIP – Video</title>
+
+  <script>
+    if (!sessionStorage.getItem("vip_token")) {
+      window.location.replace("/");
+    }
+  </script>
+
+  <link rel="stylesheet" href="/style.css" />
+
+  <!-- Font (coerenti col login/archive) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Great+Vibes&display=swap" rel="stylesheet">
+
+  <script src="/auth.js" defer></script>
+
+  <!-- ✅ CSS solo per il POPOVER "Ordina" (stabile e indipendente dal resto) -->
+  <style>
+    .gallery-actions{ position: relative; }
+
+    .sort-panel{
+      position: absolute;
+      top: calc(100% + 10px);
+      right: 0;
+      width: 230px;
+      padding: 12px 12px 10px;
+      border-radius: 14px;
+      border: 1px solid rgba(212,170,90,.22);
+      background:
+        radial-gradient(600px 220px at 50% 0%, rgba(255,255,255,.10), transparent 60%),
+        linear-gradient(180deg, rgba(20,20,24,.96), rgba(10,10,14,.96));
+      box-shadow:
+        0 26px 90px rgba(0,0,0,.70),
+        0 0 0 1px rgba(212,170,90,.10),
+        0 0 26px rgba(212,170,90,.12);
+      z-index: 12000;
+
+      display: none;
+      transform-origin: top right;
+    }
+    .sort-panel.is-open{
+      display: block;
+      animation: popIn .16s ease-out;
+    }
+    @keyframes popIn{
+      from{ opacity:0; transform: translateY(-6px) scale(.98); }
+      to{ opacity:1; transform: translateY(0) scale(1); }
+    }
+
+    .sort-block{ display:flex; flex-direction:column; gap:8px; }
+    .sort-title{
+      font-family:"Cinzel", serif;
+      font-size: 10px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: rgba(212,170,90,.78);
+      text-align: right;
+      margin-bottom: 2px;
+    }
+    .sort-divider{
+      height:1px;
+      margin: 8px 0;
+      background: rgba(255,255,255,.10);
+    }
+
+    /* ✅ Riga: testo a sinistra, pallino a destra (sempre allineati) */
+    .sort-row{
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 4px 0;
+      font-size: 12.5px;
+      color: rgba(234,234,234,.88);
+      cursor: pointer;
+      user-select: none;
+    }
+    .sort-row span{
+      flex: 1;
+      text-align: left;
+      line-height: 1.15;
+    }
+    .sort-row input[type="radio"]{
+      flex: 0 0 auto;
+      margin: 0;
+      accent-color: rgba(212,170,90,1);
+      transform: scale(.72);
+      transform-origin: center;
+    }
+
+    @media (max-width:560px){
+      .sort-panel{ width: 210px; }
+      .sort-row{ font-size: 12px; }
+      .sort-row input[type="radio"]{ transform: scale(.68); }
+    }
+  </style>
+</head>
+
+<body class="gallery videos">
+  <main class="wrap">
+    <section class="gallery-card" aria-label="Video VIP">
+      <header class="gallery-head">
+        <h1 class="gallery-title">VIDEO VIP</h1>
+        <div class="gallery-name">Iliyana</div>
+        <p class="gallery-sub">Tocca un video per aprirlo più grande.</p>
+      </header>
+
+      <!-- ✅ RIGA 1: Indietro (sx) + Ordina (dx) -->
+      <div class="gallery-actions">
+        <a class="btn-ghost" href="/archive.html">← Indietro</a>
+
+        <button
+          class="btn-ghost"
+          id="filterBtn"
+          type="button"
+          aria-haspopup="dialog"
+          aria-controls="filterPopover"
+          aria-expanded="false"
+          title="Ordina e filtra"
+        >
+          ≡ Ordina
+        </button>
+
+        <!-- ✅ POPOVER (finestrella piccola) -->
+        <div class="sort-panel" id="filterPopover" aria-hidden="true" role="dialog" aria-label="Ordina e filtra">
+          <div class="sort-block">
+            <div class="sort-title">MOSTRA</div>
+
+            <label class="sort-row">
+              <span>Tutti</span>
+              <input type="radio" name="vipFilter" value="all">
+            </label>
+
+            <label class="sort-row">
+              <span>Nuovi</span>
+              <input type="radio" name="vipFilter" value="new">
+            </label>
+
+            <label class="sort-row">
+              <span>Preferiti</span>
+              <input type="radio" name="vipFilter" value="fav">
+            </label>
+
+            <div class="sort-divider"></div>
+
+            <div class="sort-title">ORDINE</div>
+
+            <label class="sort-row">
+              <span>Più recenti</span>
+              <input type="radio" name="vipOrder" value="desc">
+            </label>
+
+            <label class="sort-row">
+              <span>Meno recenti</span>
+              <input type="radio" name="vipOrder" value="asc">
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- ✅ RIGA 2: CTA lunga SOTTO -->
+      <div class="gallery-cta">
+        <a
+          class="hub-btn archive-btn archive-btn--cta archive-btn--cta2 archive-btn--telegram archive-btn--thin"
+          href="https://t.me/iliyanadg?text=Ciao%20Iliyana!%20Voglio%20sbloccare%20un%20contenuto%20privato%20/%20PPV."
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Acquista contenuti hot via Telegram"
+        >
+          <span class="cta-title">ACQUISTA CONTENUTI</span>
+          <span class="cta-sub">
+            Foto e video hot esclusivi · via
+            <span class="tg-inline">
+              Telegram
+              <span class="tg-badge tg-badge--img" aria-hidden="true">
+                <img
+                  class="tg-plane-img"
+                  src="/telegram.png"
+                  alt=""
+                  width="18"
+                  height="18"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </span>
+            </span>
+          </span>
+        </a>
+      </div>
+
+      <div id="vgrid" class="grid"></div>
+    </section>
+  </main>
+
+  <div class="modal" id="modal" aria-hidden="true">
+    <button class="modal-close" id="modalClose" type="button">×</button>
+    <div class="modal-content" id="modalContent"></div>
+  </div>
+
+  <script src="/videos.js?v=4" defer></script>
+
+  <!-- ✅ JS popover + filtri LIVE (no reset/applica) -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const btn = document.getElementById("filterBtn");
+      const pop = document.getElementById("filterPopover");
+      if (!btn || !pop) return;
+
+      const getVip = () => (sessionStorage.getItem("vip_code") || "VIP").toUpperCase();
+      const kFilter = () => `vip_filter_videos:${getVip()}`; // all | new | fav
+      const kOrder  = () => `vip_order_videos:${getVip()}`;  // desc | asc
+
+      const read = () => {
+        let filter = "all";
+        let order = "desc";
+        try {
+          filter = localStorage.getItem(kFilter()) || "all";
+          order  = localStorage.getItem(kOrder())  || "desc";
+        } catch {}
+        if (!["all","new","fav"].includes(filter)) filter = "all";
+        if (!["desc","asc"].includes(order)) order = "desc";
+        return { filter, order };
+      };
+
+      const write = ({ filter, order }) => {
+        try {
+          localStorage.setItem(kFilter(), filter);
+          localStorage.setItem(kOrder(), order);
+        } catch {}
+      };
+
+      const setRadios = ({ filter, order }) => {
+        pop.querySelectorAll('input[name="vipFilter"]').forEach(r => r.checked = (r.value === filter));
+        pop.querySelectorAll('input[name="vipOrder"]').forEach(r => r.checked = (r.value === order));
+      };
+
+      const getRadios = () => {
+        const f = pop.querySelector('input[name="vipFilter"]:checked')?.value || "all";
+        const o = pop.querySelector('input[name="vipOrder"]:checked')?.value || "desc";
+        return { filter: f, order: o };
+      };
+
+      const openPop = () => {
+        setRadios(read());
+        pop.classList.add("is-open");
+        pop.setAttribute("aria-hidden", "false");
+        btn.setAttribute("aria-expanded", "true");
+      };
+
+      const closePop = () => {
+        pop.classList.remove("is-open");
+        pop.setAttribute("aria-hidden", "true");
+        btn.setAttribute("aria-expanded", "false");
+      };
+
+      const emit = () => {
+        const st = getRadios();
+        write(st);
+        window.dispatchEvent(new CustomEvent("vip:filters-change", {
+          detail: { type: "videos", ...st }
+        }));
+      };
+
+      // toggle
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        pop.classList.contains("is-open") ? closePop() : openPop();
+      });
+
+      // click fuori = chiudi
+      document.addEventListener("click", (e) => {
+        if (!pop.classList.contains("is-open")) return;
+        if (pop.contains(e.target) || btn.contains(e.target)) return;
+        closePop();
+      });
+
+      // ESC = chiudi
+      document.addEventListener("keydown", (e) => {
+        if (e.key !== "Escape") return;
+        if (!pop.classList.contains("is-open")) return;
+        closePop();
+      });
+
+      // LIVE: appena cambia un radio → filtra subito
+      pop.querySelectorAll('input[type="radio"]').forEach((r) => {
+        r.addEventListener("change", () => emit());
+      });
+
+      // bootstrap: stato iniziale coerente
+      setRadios(read());
+      emit();
+    });
+  </script>
+</body>
+</html>

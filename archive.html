@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>VIP – Archivio</title>
+
+  <!-- 🔐 Gate immediato: importa token da URL (Telegram) + pulisce URL + gate -->
+  <script>
+    (function () {
+      const url = new URL(window.location.href);
+      const t = url.searchParams.get("token");
+
+      // ✅ Se arrivo da Telegram con ?token=..., lo salvo in sessionStorage
+      if (t && typeof t === "string" && t.length > 10) {
+        sessionStorage.setItem("vip_token", t);
+
+        // opzionale: se non c'è vip_code, segna che arriva da Telegram
+        if (!sessionStorage.getItem("vip_code")) {
+          sessionStorage.setItem("vip_code", "TELEGRAM");
+        }
+
+        // ✅ pulisco la URL (tolgo il token dalla barra)
+        url.searchParams.delete("token");
+        window.history.replaceState({}, "", url.toString());
+      }
+
+      // 🔐 Gate: se ancora non ho token → torno al login
+      if (!sessionStorage.getItem("vip_token")) {
+        window.location.replace("/");
+      }
+    })();
+  </script>
+
+  <link rel="stylesheet" href="/style.css" />
+
+  <!-- Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Great+Vibes&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- 🔐 Verifica token con Worker (espone window.requireVip) -->
+  <script src="/auth.js" defer></script>
+</head>
+
+<body class="archive">
+  <main class="wrap">
+    <section class="archive-card" aria-label="Archivio VIP">
+
+      <header class="archive-head">
+        <h1 class="archive-title">ARCHIVIO VIP</h1>
+        <div class="archive-name">Iliyana</div>
+      </header>
+
+      <!-- ✅ STATUS -->
+      <div class="vip-status" id="vipStatus" aria-live="polite">
+        <div class="vip-status__top">
+          <span class="vip-status__dot" aria-hidden="true"></span>
+          <div class="vip-status__label">STATO ACCESSO</div>
+        </div>
+
+        <div class="vip-status__meta" id="vipStatusMeta">Verifico…</div>
+
+        <!-- Compare SOLO se in scadenza (<= 6 giorni) -->
+        <a
+          class="vip-status__renew"
+          id="vipRenew"
+          href="https://www.paypal.com/paypalme/iliyanadg/4"
+          target="_blank"
+          rel="noopener noreferrer"
+          hidden
+        >
+          RINNOVA QUI
+        </a>
+      </div>
+
+      <!-- 🔥 CTA ACQUISTO CONTENUTI -->
+      <div class="archive-cta">
+        <a
+          class="hub-btn archive-btn archive-btn--cta archive-btn--cta2 archive-btn--telegram"
+          href="https://t.me/iliyanadg?text=Ciao%20Iliyana!%20Voglio%20sbloccare%20un%20contenuto%20privato%20/%20PPV."
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Acquista contenuti: contenuti hot esclusivi via Telegram"
+        >
+          <span class="cta-title">ACQUISTA CONTENUTI</span>
+
+          <span class="cta-sub">
+            Hot esclusivi · via
+            <span class="tg-inline">
+              Telegram
+              <span class="tg-badge tg-badge--img" aria-hidden="true">
+                <img
+                  class="tg-plane-img"
+                  src="/telegram.png"
+                  alt=""
+                  width="18"
+                  height="18"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </span>
+            </span>
+          </span>
+        </a>
+      </div>
+
+      <!-- 📂 ARCHIVIO -->
+      <nav class="hub archive-hub" aria-label="Sezioni archivio">
+        <a class="hub-btn archive-btn" href="/photos.html">PHOTO</a>
+        <a class="hub-btn archive-btn" href="/videos.html">VIDEO</a>
+      </nav>
+
+      <div class="archive-actions">
+        <button class="logout logout--small" id="logoutBtn" type="button">
+          Esci
+        </button>
+      </div>
+
+    </section>
+  </main>
+
+  <script>
+    const VIP_WORKER_URL =
+      window.VIP_WORKER_URL ||
+      "https://divine-silence-8c09vip-access-verify.ilidoncheva.workers.dev";
+
+    const statusMeta = document.getElementById("vipStatusMeta");
+    const renewBtn = document.getElementById("vipRenew");
+
+    function setMeta(text) {
+      statusMeta.textContent = text || "";
+    }
+
+    window.addEventListener("DOMContentLoaded", async () => {
+      try {
+        if (window.requireVip) await window.requireVip();
+
+        const token = sessionStorage.getItem("vip_token");
+        if (!token) {
+          window.location.replace("/");
+          return;
+        }
+
+        const res = await fetch(
+          `${VIP_WORKER_URL}/status?token=${encodeURIComponent(token)}`,
+          { method: "GET", cache: "no-store" }
+        );
+
+        const data = await res.json().catch(() => null);
+        if (!res.ok || !data || data.ok !== true) {
+          setMeta("Stato non disponibile");
+          renewBtn.hidden = true;
+          return;
+        }
+
+        const daysLeft = Number(data.daysLeft);
+        const hasDays = Number.isFinite(daysLeft);
+
+        const expires = data.expires ? `Scade il ${data.expires}` : "";
+        const left = hasDays
+          ? (daysLeft === 1
+              ? "1 giorno rimasto"
+              : `${daysLeft} giorni rimasti`)
+          : "";
+
+        const meta = [expires, left].filter(Boolean).join(" • ");
+        setMeta(meta || "Stato non disponibile");
+
+        renewBtn.hidden = !(hasDays && daysLeft > 0 && daysLeft <= 6);
+
+      } catch (e) {
+        console.error(e);
+        setMeta("Stato non disponibile");
+        renewBtn.hidden = true;
+      }
+    });
+
+    document.getElementById("logoutBtn")?.addEventListener("click", () => {
+      sessionStorage.removeItem("vip_token");
+      sessionStorage.removeItem("vip_code");
+      sessionStorage.removeItem("vip_info");
+      window.location.replace("/");
+    });
+  </script>
+</body>
+</html>

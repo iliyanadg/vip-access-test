@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>VIP – Preferiti</title>
+
+  <script>
+    if (!sessionStorage.getItem("vip_token")) window.location.replace("/");
+  </script>
+
+  <link rel="stylesheet" href="/style.css" />
+
+  <!-- Font (coerenti col login/archive) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Great+Vibes&display=swap" rel="stylesheet">
+
+  <script src="/auth.js" defer></script>
+  <script src="/favorites.js" defer></script>
+</head>
+
+<body class="gallery favorites">
+  <main class="wrap">
+    <section class="gallery-card" aria-label="Preferiti VIP">
+      <header class="gallery-head">
+        <h1 class="gallery-title">PREFERITI VIP</h1>
+        <div class="gallery-name">Iliyana</div>
+        <p class="gallery-sub">Qui trovi solo foto e video che hai messo tra i preferiti.</p>
+
+        <!-- Tabs: Foto / Video -->
+        <div class="fav-tabs" role="tablist" aria-label="Seleziona contenuti preferiti">
+          <button class="tab is-active" id="tabPhotos" type="button" role="tab" aria-selected="true">
+            Foto
+          </button>
+          <button class="tab" id="tabVideos" type="button" role="tab" aria-selected="false">
+            Video
+          </button>
+        </div>
+
+        <!-- Filtri -->
+        <div class="fav-filters" aria-label="Filtri preferiti">
+          <button class="pill is-active" type="button" data-filter="all">Tutti</button>
+          <button class="pill" type="button" data-filter="new">Nuovi</button>
+        </div>
+      </header>
+
+      <div class="gallery-actions">
+        <a href="/archive.html" class="btn-ghost">← Indietro</a>
+
+        <!-- CTA centrale: decidi tu dove porta (shop/purchase/bot) -->
+        <a href="/purchase.html" class="btn-ghost" id="buyBtn">Acquista contenuti</a>
+
+        <button class="logout" id="logoutBtn" type="button">Esci</button>
+      </div>
+
+      <!-- Grid: ne usiamo una sola e cambiamo contenuto con i tabs -->
+      <div id="favGrid" class="grid"></div>
+    </section>
+  </main>
+
+  <div id="modal" class="modal" aria-hidden="true">
+    <button id="modalClose" class="modal-close" type="button">✕</button>
+    <div class="modal-content" id="modalContent"></div>
+  </div>
+
+  <script>
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      sessionStorage.removeItem("vip_token");
+      sessionStorage.removeItem("vip_code");
+      window.location.replace("/");
+    });
+  </script>
+</body>
+</html>
