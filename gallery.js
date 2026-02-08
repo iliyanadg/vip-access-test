@@ -36,6 +36,14 @@
   document.addEventListener("contextmenu", (e) => e.preventDefault());
   document.addEventListener("dragstart", (e) => e.preventDefault());
 
+  // ✅ SAFE escape per selector (Safari a volte non ha CSS.escape)
+  const esc = (s) => {
+    try {
+      if (window.CSS && typeof CSS.escape === "function") return CSS.escape(String(s));
+    } catch {}
+    return String(s).replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+  };
+
   /* ================= WATERMARK ================= */
 
   const getVipCode = () =>
@@ -44,9 +52,7 @@
   const pad2 = (n) => String(n).padStart(2, "0");
 
   const cornerText = (date) => {
-    const d = `${pad2(date.getDate())}/${pad2(
-      date.getMonth() + 1
-    )}/${date.getFullYear()}`;
+    const d = `${pad2(date.getDate())}/${pad2(date.getMonth() + 1)}/${date.getFullYear()}`;
     const t = `${pad2(date.getHours())}:${pad2(date.getMinutes())}`;
     return `${getVipCode()}\n${d} ${t} • VIP PRIVATE`;
   };
@@ -62,8 +68,7 @@
   const refreshWM = () => {
     const now = new Date();
     document.querySelectorAll(".wm").forEach((wm) => {
-      wm.textContent =
-        wm.dataset.kind === "center" ? getVipCode() : cornerText(now);
+      wm.textContent = wm.dataset.kind === "center" ? getVipCode() : cornerText(now);
     });
   };
 
@@ -71,15 +76,11 @@
 
   /* ================= FILTERS (state) ================= */
 
-  // stato UI filtri/ordine, in stile videos.js
   const uiState = { filter: "all", order: "desc" }; // filter: all|new|fav ; order: desc|asc
 
-  const normalizeFilter = (v) =>
-    ["all", "new", "fav"].includes(v) ? v : "all";
-  const normalizeOrder = (v) =>
-    ["desc", "asc"].includes(v) ? v : "desc";
+  const normalizeFilter = (v) => (["all", "new", "fav"].includes(v) ? v : "all");
+  const normalizeOrder = (v) => (["desc", "asc"].includes(v) ? v : "desc");
 
-  // fallback se l’evento vip:filters-change è partito prima che gallery.js fosse caricato
   const readInitialFilterState = () => {
     try {
       const vip = getVipCode();
@@ -121,10 +122,8 @@
 
   const toggleFav = (name) => {
     if (!name) return false;
-
     if (favs.has(name)) favs.delete(name);
     else favs.add(name);
-
     saveFavs(favs);
     return favs.has(name);
   };
@@ -145,7 +144,6 @@
     return svg;
   };
 
-  // helper: set UI di un bottone cuore (grid/modal)
   const setFavBtnState = (btn, on) => {
     if (!btn) return;
     btn.classList.toggle("is-on", !!on);
@@ -154,7 +152,6 @@
 
   /* ================= NEW BADGE (GLOBAL via KV + local cache) ================= */
 
-  // Cache locale SOLO per velocità: la verità è KV
   const localSeenKey = () => `vip_seen_${CONTENT_TYPE}:${getVipCode()}`;
 
   const loadSeenLocal = () => {
@@ -173,7 +170,6 @@
     } catch {}
   };
 
-  // ✅ Questo Set viene inizializzato da KV (Step 2)
   let seen = new Set();
 
   const makeNewBadge = () => {
@@ -188,13 +184,13 @@
     if (b) b.remove();
   };
 
+  // ✅ QUI c’è la fix: niente CSS.escape “obbligatorio”
   const findCardByName = (name) => {
     return grid
-      .querySelector(`canvas[data-file="${CSS.escape(name)}"]`)
+      .querySelector(`canvas[data-file="${esc(name)}"]`)
       ?.closest?.(".card");
   };
 
-  // helper: trova il bottone cuore nella CARD (grid) per un file
   const findFavBtnOnCard = (name) => {
     const card = findCardByName(name);
     return card ? card.querySelector(".fav-btn") : null;
@@ -239,11 +235,7 @@
           onVisible(e.target);
         }
       },
-      {
-        root: null,
-        threshold: 0.15,
-        rootMargin: "350px 0px 350px 0px",
-      }
+      { root: null, threshold: 0.15, rootMargin: "350px 0px 350px 0px" }
     );
   };
 
@@ -282,18 +274,15 @@
     return Array.isArray(d.items) ? d.items : [];
   };
 
-  // ✅ Step 2: leggere dal KV cosa è già stato visto (globale su tutti i device)
   const loadSeenFromKV = async () => {
     const d = await apiJson(`/seen?type=${encodeURIComponent(CONTENT_TYPE)}`);
     const items = Array.isArray(d.items) ? d.items : [];
     return new Set(items);
   };
 
-  // ✅ quando apri: salva su KV (globale) + aggiorna Set + cache locale
   const markSeenGlobal = async (name) => {
     if (!name) return;
 
-    // aggiorno subito UI/ram/local (istantaneo)
     if (!seen.has(name)) {
       seen.add(name);
       const local = loadSeenLocal();
@@ -301,7 +290,6 @@
       saveSeenLocal(local);
     }
 
-    // invio al KV (globale)
     try {
       await apiJson("/seen", {
         method: "POST",
@@ -352,31 +340,23 @@
 
   /* ================= FILTER APPLY (core) ================= */
 
-  // lista completa (da API)
   let allFiles = [];
-  // lista attiva (filtrata/ordinata) usata da grid + modal/nav
   let files = [];
   let index = -1;
 
-  let listLoaded = false; // 👈 per evitare flicker "Nessuna foto" finché non arriva la lista
+  let listLoaded = false;
 
-  // centrale: ricostruisce l’array visibile in base a uiState + seen + favs
   const computeVisibleFiles = () => {
-    // ricarico favs ogni volta: così è sempre consistente anche dopo modifiche
     favs = loadFavs();
 
     let arr = Array.isArray(allFiles) ? [...allFiles] : [];
 
-    // FILTRO
     if (uiState.filter === "new") {
       arr = arr.filter((name) => !seen.has(name));
     } else if (uiState.filter === "fav") {
       arr = arr.filter((name) => favs.has(name));
     }
 
-    // ORDINE
-    // Assunzione: l’API list è già “recenti -> vecchi”.
-    // desc = così com’è, asc = reverse.
     if (uiState.order === "asc") arr.reverse();
 
     return arr;
@@ -427,18 +407,15 @@
     modal.appendChild(navNextBtn);
   };
 
-  // helper: installa doppio tap su un elemento (touch + desktop dblclick)
   const attachDoubleTap = (el, onDouble) => {
     if (!el) return;
 
-    // desktop / trackpad
     el.addEventListener("dblclick", (e) => {
       e.preventDefault();
       e.stopPropagation();
       onDouble();
     });
 
-    // mobile touch
     let lastTap = 0;
     let startX = 0;
     let startY = 0;
@@ -465,7 +442,6 @@
         const dx = Math.abs(t.clientX - startX);
         const dy = Math.abs(t.clientY - startY);
 
-        // se è uno swipe/scroll non lo considero tap
         if (dx > 18 || dy > 18) {
           lastTap = now;
           return;
@@ -494,19 +470,16 @@
     if (navNextBtn) navNextBtn.style.display = "none";
   };
 
-  // quando cambia un fav mentre siamo in filtro "fav", dobbiamo aggiornare vista
   const onFavChanged = (name, on) => {
-    // sync button in card
     const cardBtn = findFavBtnOnCard(name);
     if (cardBtn) setFavBtnState(cardBtn, on);
 
-    // se sto filtrando "Preferiti" e lo tolgo -> sparisce: re-render + chiusura modal se aperto su quel file
     if (uiState.filter === "fav" && !on) {
       const current = files[index];
       if (modal.classList.contains("open") && current === name) {
         closeModal();
       }
-      renderGrid(); // aggiorna subito la lista
+      renderGrid();
     }
   };
 
@@ -522,12 +495,11 @@
 
     b.addEventListener("click", (e) => {
       e.preventDefault();
-      e.stopPropagation(); // IMPORTANT: non apre il modal
+      e.stopPropagation();
 
       const on = toggleFav(name);
       setFavBtnState(b, on);
 
-      // sync: aggiorno il gemello sulla card (se questo è modal) o nel modal (se aperto)
       const twin = findFavBtnOnCard(name);
       if (twin && twin !== b) setFavBtnState(twin, on);
 
@@ -538,13 +510,13 @@
   };
 
   const openModalAt = async (i) => {
-    files = computeVisibleFiles(); // riallineo sempre all’ultima vista
+    files = computeVisibleFiles();
     index = clampIndex(i);
     const name = files[index];
     if (!name) return;
 
-    // ✅ SEEN globale: appena apri
-    markSeenGlobal(name); // non await: UI istantanea
+    markSeenGlobal(name);
+
     const card = findCardByName(name);
     if (card) hideBadgeOnCard(card);
 
@@ -556,7 +528,6 @@
     const c = document.createElement("canvas");
     c.className = "modal-canvas";
 
-    // ❤️ cuore anche nel modal (overlay)
     const modalFavBtn = makeFavBtn(name);
     modalFavBtn.classList.add("fav-btn--modal");
 
@@ -568,12 +539,10 @@
     );
     modalContent.appendChild(wrap);
 
-    // sync iniziale con card
     setFavBtnState(modalFavBtn, isFav(name));
     const cardBtn = findFavBtnOnCard(name);
     if (cardBtn) setFavBtnState(cardBtn, isFav(name));
 
-    // ✅ double tap sul contenuto nel modal => toggle preferiti
     attachDoubleTap(c, () => {
       const on = toggleFav(name);
       setFavBtnState(modalFavBtn, on);
@@ -596,15 +565,12 @@
     if (navNextBtn) navNextBtn.style.display = "";
     updateNavButtonsState();
 
-    const bmp = await fetchBitmap(
-      `/media/${CONTENT_TYPE}/${encodeURIComponent(name)}`
-    );
+    const bmp = await fetchBitmap(`/media/${CONTENT_TYPE}/${encodeURIComponent(name)}`);
     c.width = bmp.width;
     c.height = bmp.height;
     drawContain(c.getContext("2d"), bmp, c.width, c.height);
     refreshWM();
 
-    // se sto su "Nuovi", appena apro questa diventa "vista" → deve sparire dalla griglia
     if (uiState.filter === "new") {
       setTimeout(() => renderGrid(), 0);
     }
@@ -623,7 +589,6 @@
     if (e.key === "ArrowRight") return openModalAt(index + 1);
   });
 
-  // swipe (solo in modal)
   let touchStartX = 0;
   let touchStartY = 0;
   let touchActive = false;
@@ -673,10 +638,8 @@
   };
 
   const renderGrid = () => {
-    // ricostruisco la lista visibile in base a stato + seen + favs
     files = computeVisibleFiles();
 
-    // reset lazy machinery (così non rimane roba “vecchia”)
     disconnectThumbIO();
     thumbQueue = [];
     loadedThumbs = new Set();
@@ -685,22 +648,11 @@
     grid.innerHTML = "";
 
     if (!files.length) {
-      // se la lista non è ancora stata caricata dall'API, NON mostrare "Nessuna foto"
-      if (!listLoaded) {
-        return; // se vuoi, qui puoi mettere "Caricamento…"
-      }
+      if (!listLoaded) return;
 
-      // messaggi coerenti
-      if (uiState.filter === "fav") {
-        grid.innerHTML = "<div class='sub'>Nessun preferito</div>";
-      } else if (uiState.filter === "new") {
-        grid.innerHTML = "<div class='sub'>Nessun contenuto nuovo</div>";
-      } else {
-        grid.innerHTML =
-          CONTENT_TYPE === "photos"
-            ? "<div class='sub'>Nessuna foto</div>"
-            : "<div class='sub'>Nessun video</div>";
-      }
+      if (uiState.filter === "fav") grid.innerHTML = "<div class='sub'>Nessun preferito</div>";
+      else if (uiState.filter === "new") grid.innerHTML = "<div class='sub'>Nessun contenuto nuovo</div>";
+      else grid.innerHTML = "<div class='sub'>Nessuna foto</div>";
       return;
     }
 
@@ -712,9 +664,7 @@
       loadedThumbs.add(name);
 
       enqueueThumb(async () => {
-        const bmp = await fetchBitmap(
-          `/media/${CONTENT_TYPE}/${encodeURIComponent(name)}`
-        );
+        const bmp = await fetchBitmap(`/media/${CONTENT_TYPE}/${encodeURIComponent(name)}`);
 
         const r = canvasEl.getBoundingClientRect();
         const w = Math.max(180, Math.floor(r.width || 300));
@@ -737,24 +687,16 @@
       c.onclick = () => openModalAt(i);
 
       card.append(c, makeWM("corner"));
-
-      // ❤️ FAVORITES button (localStorage) — non apre il modal
       card.appendChild(makeFavBtn(name));
 
-      // ✅ Badge NEW solo se NON è nel KV (seen Set)
-      // (Anche se filtro = new, lo lasciamo comunque, è coerente)
-      if (!seen.has(name)) {
-        card.appendChild(makeNewBadge());
-      }
+      if (!seen.has(name)) card.appendChild(makeNewBadge());
 
       grid.appendChild(card);
 
       if (thumbIO) thumbIO.observe(c);
       else {
         enqueueThumb(async () => {
-          const bmp = await fetchBitmap(
-            `/media/${CONTENT_TYPE}/${encodeURIComponent(name)}`
-          );
+          const bmp = await fetchBitmap(`/media/${CONTENT_TYPE}/${encodeURIComponent(name)}`);
 
           const r = c.getBoundingClientRect();
           const w = Math.max(180, Math.floor(r.width || 300));
@@ -773,25 +715,17 @@
 
   /* ================= INIT ================= */
 
-  // requireVip NON deve bloccare la gallery: lo lanciamo in background
   const safeRequireVip = () => {
     try {
-      if (window.requireVip) {
-        window.requireVip().catch(() => {});
-      }
+      if (window.requireVip) window.requireVip().catch(() => {});
     } catch {}
   };
 
   const init = async () => {
     try {
-      // avvia requireVip in background
       safeRequireVip();
-
-      // stato filtri iniziale (come videos.js)
       readInitialFilterState();
 
-      // ✅ Step 2: prima leggo SEEN dal KV (globale)
-      // fallback: se KV fallisce uso cache locale, così non si rompe nulla
       try {
         seen = await loadSeenFromKV();
       } catch (e) {
@@ -800,9 +734,8 @@
       }
 
       allFiles = await loadList();
-      listLoaded = true; // 👈 da qui in poi i messaggi “Nessuna foto” sono affidabili
+      listLoaded = true;
 
-      // render iniziale coerente con filtri/ordine
       renderGrid();
     } catch (e) {
       console.error(e);
@@ -810,7 +743,6 @@
     }
   };
 
-  // ✅ ascolta filtri da photos.html
   window.addEventListener("vip:filters-change", (ev) => {
     try {
       const d = ev && ev.detail ? ev.detail : null;
@@ -819,7 +751,6 @@
       uiState.filter = normalizeFilter(d.filter);
       uiState.order = normalizeOrder(d.order);
 
-      // se il modal è aperto e il contenuto corrente non rientra più nel filtro → chiudo (coerenza UX)
       if (modal.classList.contains("open")) {
         const current = files[index];
         if (current) {
