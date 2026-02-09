@@ -1,8 +1,3 @@
-/* =========================================================
-   VIP PRIVATE ARCHIVE — CLEAN STYLE (single source of truth)
-   ========================================================= */
-
-/* ---------- THEME ---------- */
 :root{
   --bg:#0b0b0f;
   --panel:rgba(255,255,255,.06);
@@ -13,28 +8,29 @@
   --shadow:0 18px 60px rgba(0,0,0,.55);
   --radius:18px;
 
+  /* gold */
   --gold: rgba(212,170,90,1);
   --gold-soft: rgba(212,170,90,.85);
+  --gold-glow: rgba(212,170,90,.45);
 }
 
-/* ---------- BASE ---------- */
+/* =========================================================
+   BASE
+   ========================================================= */
 *{ box-sizing:border-box; }
-html,body{ height:100%; }
+html, body{ height:100%; }
 
 body{
   margin:0;
   font-family: system-ui, -apple-system, Arial, sans-serif;
-  color:var(--text);
   background:
     radial-gradient(1200px 700px at 20% 0%, rgba(255,255,255,.06), transparent 60%),
     radial-gradient(900px 600px at 80% 20%, rgba(255,255,255,.05), transparent 60%),
     var(--bg);
+  color:var(--text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
-a{ color:var(--gold-soft); text-decoration:none; }
-a:hover{ text-decoration:underline; }
 
 .wrap{
   max-width:1100px;
@@ -42,9 +38,38 @@ a:hover{ text-decoration:underline; }
   padding:48px 22px;
 }
 
-/* ---------- GENERIC INPUT/BUTTON (fallback) ---------- */
+h1{
+  margin:0 0 10px 0;
+  font-size: clamp(34px, 5vw, 56px);
+  letter-spacing:1px;
+}
+
+h2{
+  margin:26px 0 14px;
+  font-size: clamp(22px, 3.2vw, 32px);
+}
+
+.sub{
+  margin:0 0 18px 0;
+  color:var(--muted);
+}
+
+/* Link: evita “blu sottolineato” */
+a{ color: var(--gold-soft); text-decoration:none; }
+a:hover{ text-decoration: underline; }
+
+/* =========================================================
+   ROW / INPUT / BUTTON (generic)
+   ========================================================= */
+.row{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+
 input{
-  width:100%;
+  width:min(340px, 100%);
   padding:12px 14px;
   border-radius:12px;
   border:1px solid var(--border);
@@ -54,23 +79,316 @@ input{
 }
 
 button{
+  padding:12px 16px;
+  border-radius:12px;
   border:0;
+  background:#fff;
+  color:#000;
+  font-weight:800;
+  cursor:pointer;
+}
+
+button:disabled{ opacity:.6; cursor:not-allowed; }
+.status{ margin-top:14px; }
+
+/* =========================================================
+   TOP ACTIONS
+   ========================================================= */
+.top-actions{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  margin:14px 0 18px;
+  flex-wrap:wrap;
+}
+
+.btn-ghost,
+.btn-lite,
+.logout{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:12px 16px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  background: rgba(255,255,255,.08);
+  color:#fff;
+  text-decoration:none;
+  font-weight:800;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* =========================================================
+   HUB
+   ========================================================= */
+.hub{
+  display:grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap:14px;
+  margin-top:18px;
+}
+
+.hub-btn{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  height:84px;
+  border-radius:16px;
+  border:1px solid var(--border);
+  background: linear-gradient(180deg, var(--panel2), var(--panel));
+  color:#fff;
+  font-weight:900;
+  text-decoration:none;
+  letter-spacing:.3px;
+  box-shadow: var(--shadow);
+  transition: transform .12s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.hub-btn:hover{ transform: translateY(-1px); }
+
+/* =========================================================
+   GRID / CARD
+   ========================================================= */
+.grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap:14px;
+  margin-top:12px;
+  align-items:start;
+}
+
+.card{
+  background: linear-gradient(180deg, var(--panel2), var(--panel));
+  border:1px solid var(--border);
+  border-radius: var(--radius);
+  overflow:hidden;
+  box-shadow: var(--shadow);
+  position:relative;
+  isolation:isolate;
+}
+
+/* ===== IMMAGINI (fallback img) ===== */
+.thumb{
+  width:100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display:block;
+  cursor:pointer;
+  background: rgba(0,0,0,.35);
+  user-select:none;
+  -webkit-user-select:none;
+  -webkit-touch-callout:none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ===== CANVAS (gallery.js) ===== */
+.thumb-canvas{
+  width:100%;
+  height:auto;
+  aspect-ratio: 1 / 1;
+  display:block;
+  cursor:pointer;
+  background: rgba(0,0,0,.35);
+  user-select:none;
+  -webkit-user-select:none;
+  -webkit-touch-callout:none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.card .cap{
+  padding:10px 12px;
+  font-size:14px;
+  color:var(--muted);
+}
+
+/* =========================================================
+   VIDEO
+   ========================================================= */
+.video-wrap{
+  position:relative;
+  width:100%;
+  aspect-ratio: 1 / 1;
+  background:#000;
+  overflow:hidden;
+  border-radius: var(--radius);
+  contain: layout paint;
+}
+
+.vip-video{
+  width:100%;
+  height:100%;
+  object-fit: cover;
+  display:block;
+  background:#000;
+  cursor:pointer;
+  user-select:none;
+  -webkit-user-select:none;
+  -webkit-touch-callout:none;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;
+  will-change: transform;
+}
+
+/* =========================================================
+   MODAL
+   ========================================================= */
+.modal{
+  position:fixed;
+  inset:0;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  background: rgba(0,0,0,.72);
+  z-index:9999;
+}
+.modal.open{ display:flex; }
+
+.modal-content{
+  width: min(980px, 96vw);
+  max-height:86vh;
+  border-radius:16px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.18);
+  box-shadow: 0 30px 120px rgba(0,0,0,.8);
+  background:#000;
+}
+
+.modal-wrap{ position:relative; width:100%; height:100%; }
+
+.modal-content img,
+.modal-content video{
+  width:100%;
+  height:100%;
+  max-height:86vh;
+  object-fit: contain;
+  display:block;
+  background:#000;
+}
+
+/* MODAL CANVAS */
+.modal-canvas{
+  max-width:92vw;
+  max-height:82vh;
+  width:auto;
+  height:auto;
+  display:block;
+  margin:0 auto;
+  border-radius:16px;
+  background:#000;
+}
+
+.modal-close{
+  position:absolute;
+  top:14px;
+  right:14px;
+  border:0;
+  border-radius:999px;
+  width:44px;
+  height:44px;
+  font-size:22px;
+  background: rgba(255,255,255,.14);
+  color:#fff;
   cursor:pointer;
   -webkit-tap-highlight-color: transparent;
 }
 
-.status{
-  margin: 8px 0 0;
-  font-size: 13px;
-  color: var(--muted);
-  text-align:center;
+/* =========================================================
+   WATERMARK
+   ========================================================= */
+.wm{
+  position:absolute;
+  top:10px;
+  right:10px;
+  padding:6px 8px;
+  font-size:11px;
+  line-height:1.25;
+  letter-spacing:.2px;
+  border-radius:12px;
+  background: rgba(0,0,0,.38);
+  border:1px solid rgba(255,255,255,.16);
+  color: rgba(255,255,255,.86);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  pointer-events:none;
+  user-select:none;
+  -webkit-user-select:none;
+  -webkit-touch-callout:none;
+  white-space: pre-line;
+  opacity:.85;
+}
+
+.wm--modal{
+  top:14px;
+  right:14px;
+  font-size:12px;
+  opacity:.92;
+  background: rgba(0,0,0,.48);
+}
+
+/* watermark centrale (solo VIP code) */
+.wm--center{
+  top:50%;
+  left:50%;
+  right:auto;
+  transform: translate(-50%, -50%) rotate(-12deg);
+  padding:0;
+  background: transparent;
+  border:0;
+  font-size:12px;
+  letter-spacing:.28em;
+  font-weight:700;
+  text-transform:uppercase;
+  color: rgba(255,255,255,.20);
+  text-shadow: 0 1px 12px rgba(0,0,0,.25);
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
+  pointer-events:none;
+  white-space: nowrap;
 }
 
 /* =========================================================
-   LOGIN PAGE (index.html)
-   body class="login"
+   “ANTI DOWNLOAD UI” (best effort)
    ========================================================= */
+.vip-video::-webkit-media-controls-download-button{ display:none !important; }
+.vip-video::-webkit-media-controls-picture-in-picture-button{ display:none !important; }
+.vip-video::-webkit-media-controls-enclosure{ overflow:hidden !important; }
 
+/* =========================================================
+   MODAL NAV (PREV/NEXT)
+   ========================================================= */
+.modal-nav{
+  position:fixed;
+  top:50%;
+  transform: translateY(-50%);
+  width:54px;
+  height:54px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.18);
+  background: rgba(255,255,255,.12);
+  color:#fff;
+  font-size:34px;
+  line-height:1;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  z-index:10000;
+  -webkit-tap-highlight-color: transparent;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.modal-prev{ left:14px; }
+.modal-next{ right:14px; }
+.modal-nav:disabled{ opacity:.35; cursor:not-allowed; }
+
+/* =========================================================
+   LOGIN (solo index.html)
+   ========================================================= */
 body.login .wrap{
   min-height:100vh;
   display:flex;
@@ -84,14 +402,11 @@ body.login .login-card{
   width:min(680px, 94vw);
   border-radius:22px;
   padding:34px 34px 26px;
-
   background:
     radial-gradient(900px 420px at 50% 0%, rgba(255,255,255,.10), transparent 58%),
     linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
-
   border:1px solid rgba(255,255,255,.14);
   box-shadow:0 26px 110px rgba(0,0,0,.70);
-
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }
@@ -105,18 +420,19 @@ body.login .login-kicker{
   font-family:"Cinzel", serif;
   font-weight:500;
   letter-spacing:3.4px;
-  font-size: clamp(44px, 6vw, 56px);
+  font-size:44px;
   text-transform:uppercase;
   color:var(--gold);
   text-shadow:
     0 0 6px rgba(212,170,90,.25),
     0 0 18px rgba(212,170,90,.18),
     0 0 36px rgba(212,170,90,.12);
+  transition: text-shadow .25s ease, filter .25s ease;
 }
 
 body.login .login-name{
   font-family:"Great Vibes", cursive;
-  font-size: clamp(40px, 5.2vw, 52px);
+  font-size:46px;
   margin-top:6px;
   color:var(--gold-soft);
 }
@@ -126,37 +442,8 @@ body.login .login-form{
   flex-direction:column;
   gap:14px;
   align-items:center;
-  width:100%;
 }
 
-/* ---------- Telegram visible button ---------- */
-body.login .tg-btn{
-  width:100%;
-  padding:13px 16px;
-  border-radius:16px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:10px;
-
-  background: linear-gradient(180deg, #4aa3ff, #2a7df0);
-  color: rgba(255,255,255,.95);
-  font-weight:900;
-  letter-spacing:.6px;
-
-  box-shadow:
-    0 14px 50px rgba(0,0,0,.35),
-    inset 0 1px 0 rgba(255,255,255,.22);
-}
-
-body.login .tg-btn .tg-icon{
-  width:18px; height:18px; display:block; flex:0 0 auto;
-}
-body.login .tg-btn .tg-text{
-  font-size:14px; line-height:1;
-}
-
-/* ---------- VIP code field ---------- */
 body.login .field{
   width:100%;
   display:flex;
@@ -166,7 +453,7 @@ body.login .field{
   border-radius:14px;
   border:1px solid rgba(212,170,90,.28);
   background: rgba(0,0,0,.26);
-  transition: box-shadow .2s ease, border-color .2s ease;
+  transition: box-shadow .25s ease, border-color .25s ease;
 }
 
 body.login .field .icon{
@@ -200,21 +487,907 @@ body.login .field:focus-within{
     0 0 28px rgba(212,170,90,.12);
 }
 
-/* ---------- Login gold button ---------- */
+body.login:focus-within .login-kicker{
+  text-shadow:
+    0 0 10px rgba(212,170,90,.36),
+    0 0 26px rgba(212,170,90,.22),
+    0 0 52px rgba(212,170,90,.14);
+}
+
 body.login .login-btn{
   width:100%;
   padding:13px 16px;
   border-radius:16px;
-
+  border:0;
   background: linear-gradient(180deg, rgba(212,170,90,1), rgba(180,135,55,1));
   color: rgba(10,10,10,.92);
-
   font-weight:900;
   letter-spacing:.6px;
+  cursor:pointer;
 }
 body.login .login-btn:active{ transform: translateY(1px); }
 
-/* ---------- Divider: line — OR USE — line ---------- */
+body.login .login-divider{
+  height:1px;
+  background: rgba(255,255,255,.10);
+  margin:18px 0 16px;
+}
+
+/* Avviso come nota legale (ultra discreta) */
+body.login .legal{
+  text-align:left;
+  margin-top:6px;
+  opacity:.75;
+}
+
+body.login .legal-title{
+  font-family:"Cinzel", serif;
+  font-size:10.5px;
+  letter-spacing:1px;
+  margin:0 0 2px 0;
+  font-weight:600;
+  text-transform:uppercase;
+  color: rgba(212,170,90,.78);
+}
+
+body.login .legal p{
+  margin:0;
+  padding:0;
+  font-size:10.6px;
+  line-height:1.38;
+  max-width: 540px;
+  color: rgba(212,170,90,.66);
+}
+
+body.login .legal-copy{
+  margin-top:8px;
+  font-size:11px;
+  color: rgba(212,170,90,.76);
+}
+
+/* =========================================================
+   ARCHIVE (solo archive.html)
+   ========================================================= */
+body.archive .wrap{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:42px 18px;
+  max-width:1200px;
+}
+
+body.archive .archive-card{
+  width:min(760px, 94vw);
+  border-radius:22px;
+  padding:34px 34px 26px;
+  background:
+    radial-gradient(900px 420px at 50% 0%, rgba(255,255,255,.10), transparent 58%),
+    linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+  border:1px solid rgba(255,255,255,.14);
+  box-shadow:0 26px 110px rgba(0,0,0,.70);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+body.archive .archive-head{
+  text-align:center;
+  margin-bottom:16px;
+}
+
+body.archive .archive-title{
+  margin:0;
+  font-family:"Cinzel", serif;
+  font-weight:600;
+  letter-spacing:3.2px;
+  text-transform:uppercase;
+  color:var(--gold);
+  font-size: clamp(32px, 4.6vw, 56px);
+  text-shadow:
+    0 0 6px rgba(212,170,90,.20),
+    0 0 18px rgba(212,170,90,.14),
+    0 0 36px rgba(212,170,90,.10);
+}
+
+body.archive .archive-name{
+  margin-top:8px;
+  font-family:"Great Vibes", cursive;
+  font-size: clamp(34px, 4.2vw, 48px);
+  color: var(--gold-soft);
+  text-shadow: 0 0 10px rgba(212,170,90,.18);
+}
+
+body.archive .archive-hub{
+  grid-template-columns: 1fr !important;
+  gap:12px;
+  margin-top:0;
+}
+
+body.archive .archive-btn{
+  height:72px;
+  border:0 !important;
+  border-radius:16px;
+  background: linear-gradient(180deg, rgba(212,170,90,1), rgba(180,135,55,1)) !important;
+  color: rgba(8,8,8,.96) !important;
+
+  font-family: system-ui, -apple-system, Arial, sans-serif;
+  font-weight: 900;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+
+  box-shadow:
+    0 18px 60px rgba(0,0,0,.45),
+    inset 0 1px 0 rgba(255,255,255,.28);
+
+  transition: transform .12s ease, box-shadow .22s ease, filter .22s ease;
+  text-decoration:none !important;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body.archive .archive-btn:hover{
+  transform: translateY(-1px);
+  filter: brightness(1.03);
+  box-shadow:
+    0 22px 80px rgba(0,0,0,.50),
+    0 0 0 3px rgba(212,170,90,.10),
+    0 0 28px rgba(212,170,90,.14),
+    inset 0 1px 0 rgba(255,255,255,.32);
+}
+
+body.archive .archive-btn:focus,
+body.archive .archive-btn:focus-visible{
+  outline:none;
+  filter: brightness(1.03);
+  box-shadow:
+    0 22px 80px rgba(0,0,0,.50),
+    0 0 0 3px rgba(212,170,90,.14),
+    0 0 34px rgba(212,170,90,.18),
+    inset 0 1px 0 rgba(255,255,255,.32);
+}
+
+body.archive .archive-btn:active{
+  transform: translateY(1px);
+  filter: brightness(0.99);
+}
+
+body.archive .archive-actions{
+  display:flex;
+  justify-content:center;
+  margin-top:14px;
+}
+
+body.archive .logout--small{
+  padding:10px 18px;
+  font-size:14px;
+  font-weight:900;
+  border-radius:999px;
+
+  background: rgba(212,170,90,.08);
+  border: 1px solid rgba(212,170,90,.22);
+  color: rgba(212,170,90,.92);
+
+  box-shadow:
+    0 14px 50px rgba(0,0,0,.35),
+    inset 0 1px 0 rgba(255,255,255,.10);
+
+  transition: transform .12s ease, box-shadow .22s ease, filter .22s ease, background .22s ease, border-color .22s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body.archive .logout--small:hover{
+  transform: translateY(-1px);
+  background: rgba(212,170,90,.11);
+  border-color: rgba(212,170,90,.32);
+  filter: brightness(1.02);
+  box-shadow:
+    0 18px 70px rgba(0,0,0,.42),
+    0 0 0 3px rgba(212,170,90,.10),
+    0 0 26px rgba(212,170,90,.12),
+    inset 0 1px 0 rgba(255,255,255,.12);
+}
+
+body.archive .logout--small:active{
+  transform: translateY(1px);
+}
+
+/* =========================================================
+   GALLERY (photos.html + videos.html)
+   ========================================================= */
+body.gallery .wrap{
+  min-height:100vh;
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  padding:42px 18px;
+  max-width:1200px;
+}
+
+body.gallery .gallery-card{
+  width:min(980px, 94vw);
+  border-radius:22px;
+  padding:30px 30px 26px;
+  background:
+    radial-gradient(900px 420px at 50% 0%, rgba(255,255,255,.10), transparent 58%),
+    linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+  border:1px solid rgba(255,255,255,.14);
+  box-shadow:0 26px 110px rgba(0,0,0,.70);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+body.gallery .gallery-head{
+  text-align:center;
+  margin-bottom:16px;
+}
+
+body.gallery .gallery-title{
+  margin:0;
+  font-family:"Cinzel", serif;
+  font-weight:600;
+  letter-spacing:3.2px;
+  text-transform:uppercase;
+  color:var(--gold);
+  font-size: clamp(28px, 4.2vw, 52px);
+  text-shadow:
+    0 0 6px rgba(212,170,90,.20),
+    0 0 18px rgba(212,170,90,.14),
+    0 0 36px rgba(212,170,90,.10);
+}
+
+body.gallery .gallery-name{
+  margin-top:8px;
+  font-family:"Great Vibes", cursive;
+  font-size: clamp(30px, 4vw, 46px);
+  color: var(--gold-soft);
+  text-shadow: 0 0 10px rgba(212,170,90,.18);
+}
+
+body.gallery .gallery-sub{
+  margin:10px auto 0;
+  max-width:680px;
+  font-size:13.5px;
+  line-height:1.35;
+  color: rgba(212,170,90,.62);
+  opacity:.95;
+}
+
+body.gallery .gallery-actions{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  align-items:center;
+  margin:16px 0 14px;
+  flex-wrap:wrap;
+}
+
+/* Glow oro su card */
+body.gallery .card{
+  border: 1px solid rgba(212,170,90,.16);
+  box-shadow:
+    0 18px 60px rgba(0,0,0,.55),
+    0 0 0 1px rgba(212,170,90,.10),
+    0 0 26px rgba(212,170,90,.10);
+  transition: transform .12s ease, box-shadow .22s ease, border-color .22s ease;
+}
+
+body.gallery .card:hover{
+  transform: translateY(-1px);
+  border-color: rgba(212,170,90,.24);
+  box-shadow:
+    0 22px 80px rgba(0,0,0,.58),
+    0 0 0 1px rgba(212,170,90,.14),
+    0 0 34px rgba(212,170,90,.14);
+}
+
+/* glow anche sul video wrapper */
+body.gallery .video-wrap{
+  box-shadow:
+    0 0 0 1px rgba(212,170,90,.12),
+    0 0 22px rgba(212,170,90,.10);
+}
+
+/* caption più premium */
+body.gallery .card .cap{
+  font-size:12.5px;
+  letter-spacing:.06em;
+  text-transform: uppercase;
+  opacity:.92;
+}
+
+/* =========================================================
+   RESPONSIVE (1 sola fonte di verità)
+   ========================================================= */
+@media (max-width:560px){
+  .hub{ grid-template-columns:1fr; }
+  .wrap{ padding:34px 16px; }
+
+  .modal-nav{ width:46px; height:46px; font-size:28px; }
+  .modal-prev{ left:10px; }
+  .modal-next{ right:10px; }
+
+  body.login .login-card{
+    padding:28px 18px 22px;
+    border-radius:20px;
+  }
+  body.login .login-kicker{ font-size:48px; }
+  body.login .login-name{ font-size:44px; }
+
+  body.archive .archive-card{
+    padding:28px 18px 22px;
+    border-radius:20px;
+  }
+  body.archive .archive-hub{ gap:10px; }
+  body.archive .archive-btn{
+    height:50px;
+    border-radius:14px;
+    font-size:13px;
+    letter-spacing:.12em;
+    box-shadow:
+      0 12px 34px rgba(0,0,0,.38),
+      inset 0 1px 0 rgba(255,255,255,.22);
+  }
+
+  body.gallery .gallery-card{
+    padding:24px 16px 18px;
+    border-radius:20px;
+  }
+  body.gallery .gallery-sub{
+    font-size:11.5px;
+    margin-top:8px;
+  }
+
+  /* layout grid mobile (opzionale, ma pulito) */
+  body.gallery.photos .grid{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap:10px;
+  }
+  body.gallery.videos .grid{
+    grid-template-columns: 1fr;
+    gap:12px;
+  }
+}
+
+@media (min-width:980px){
+  body.login .login-card{
+    width:min(760px, 78vw);
+    padding:40px 40px 28px;
+  }
+  body.login .login-kicker{ font-size:55px; }
+  body.login .login-name{ font-size:50px; }
+}
+
+/* =========================================================
+   PATCH: GALLERY actions (Indietro sx / Esci dx) + hide hint
+   ========================================================= */
+
+/* 1) Barra bottoni: sinistra/destra */
+body.gallery .gallery-actions{
+  justify-content:space-between;   /* Indietro a sx, Esci a dx */
+  width:100%;
+}
+
+/* 1b) Bottoni in gallery = stessa grafica del tasto "Esci" in archive */
+body.gallery .gallery-actions a,
+body.gallery .gallery-actions button{
+  padding:10px 18px;
+  font-size:14px;
+  font-weight:900;
+  border-radius:999px;
+
+  background: rgba(212,170,90,.08);
+  border: 1px solid rgba(212,170,90,.22);
+  color: rgba(212,170,90,.92);
+
+  box-shadow:
+    0 14px 50px rgba(0,0,0,.35),
+    inset 0 1px 0 rgba(255,255,255,.10);
+
+  transition: transform .12s ease, box-shadow .22s ease, filter .22s ease, background .22s ease, border-color .22s ease;
+  -webkit-tap-highlight-color: transparent;
+
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+}
+
+body.gallery .gallery-actions a:hover,
+body.gallery .gallery-actions button:hover{
+  transform: translateY(-1px);
+  background: rgba(212,170,90,.11);
+  border-color: rgba(212,170,90,.32);
+  filter: brightness(1.02);
+  box-shadow:
+    0 18px 70px rgba(0,0,0,.42),
+    0 0 0 3px rgba(212,170,90,.10),
+    0 0 26px rgba(212,170,90,.12),
+    inset 0 1px 0 rgba(255,255,255,.12);
+}
+
+body.gallery .gallery-actions a:active,
+body.gallery .gallery-actions button:active{
+  transform: translateY(1px);
+}
+
+/* 2) Rimuove il testo "Tocca una foto..." / "Tocca un video..." */
+body.gallery .gallery-sub{
+  display:none !important;
+}
+
+/* Mobile: tieni comunque sx/dx (non centrare) */
+@media (max-width:560px){
+  body.gallery .gallery-actions{
+    justify-content:space-between;
+    gap:10px;
+  }
+}
+
+/* =========================================================
+   VIDEO mobile → 2 colonne come FOTO
+   ========================================================= */
+@media (max-width:560px){
+
+  /* forza 2 colonne anche per i video */
+  body.gallery.videos .grid{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap:10px;
+  }
+
+  /* mantiene il formato quadrato pulito */
+  body.gallery.videos .video-wrap{
+    aspect-ratio: 1 / 1;
+  }
+
+}
+
+@media (max-width:560px){
+
+  /* ===== TITOLI FOTO / VIDEO (più grandi su mobile) ===== */
+  body.gallery .gallery-title{
+    font-size: 34px;
+    letter-spacing: 3.6px;
+  }
+
+  body.gallery .gallery-name{
+    font-size: 40px;
+    margin-top: 6px;
+  }
+
+  /* ===== GRID VIDEO = 2 colonne come FOTO ===== */
+  body.gallery.videos .grid{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  /* ===== GRID FOTO (resta uguale, solo ribadito) ===== */
+  body.gallery.photos .grid{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+}
+
+/* Nasconde il titolo sotto i video (VIDEO VIP 01, 02, ecc.) */
+body.gallery.videos .card .cap{
+  display: none !important;
+}
+/* =========================================================
+   BADGE NEW (video/photo) — UNICA VERSIONE (verde, a destra)
+   ========================================================= */
+.badge-new{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  left: auto;
+  z-index: 5;
+
+  background: linear-gradient(135deg, #1f7f5c, #2fbf8f);
+  color: #ffffff;
+
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  padding: 4px 9px;
+  border-radius: 999px;
+
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.25),
+    0 4px 12px rgba(47,191,143,0.45);
+
+  pointer-events: none;
+  user-select: none;
+}
+/* =========================================================
+   VIP STATUS (solo archive.html) — UNICA VERSIONE
+   - pallino perfettamente allineato a "STATO ACCESSO"
+   - riga scadenza sempre visibile
+   - bottone rinnova piccolo (solo quando mostrato da JS)
+   ========================================================= */
+
+body.archive .vip-status{
+  width:100%;
+  margin: 14px 0 12px;
+  padding: 14px 16px 12px;
+  border-radius: 16px;
+
+  background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+  border: 1px solid rgba(47,191,143,.22);
+  box-shadow:
+    0 16px 56px rgba(0,0,0,.42),
+    0 0 0 1px rgba(47,191,143,.10),
+    0 0 26px rgba(47,191,143,.10);
+
+  text-align:left;
+}
+
+body.archive .vip-status__top{
+  display:flex;
+  align-items:center;        /* allineamento verticale */
+  gap:10px;
+  margin-bottom:8px;
+}
+
+body.archive .vip-status__dot{
+  width:10px;
+  height:10px;
+  border-radius:999px;
+  background:#2fbf8f;
+  box-shadow:
+    0 0 0 2px rgba(47,191,143,.18),
+    0 0 16px rgba(47,191,143,.55);
+
+  /* micro aggiustamento per match perfetto col testo */
+  position: relative;
+  top: -0.5px;
+  flex: 0 0 auto;
+}
+
+body.archive .vip-status__label{
+  font-family:"Cinzel", serif;
+  font-size: 11px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: rgba(212,170,90,.72);
+
+  line-height: 1;           /* evita che il testo "scenda" */
+  margin: 0;
+}
+
+body.archive .vip-status__meta{
+  font-size: 13px;
+  color: rgba(234,234,234,.82);
+  line-height: 1.25;
+}
+
+/* bottone rinnova: più piccolo e premium */
+body.archive .vip-status__renew{
+  margin-top:10px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  padding: 7px 12px;        /* più piccolo */
+  border-radius:999px;
+
+  border: 1px solid rgba(212,170,90,.26);
+  background: rgba(212,170,90,.10);
+  color: rgba(212,170,90,.95);
+
+  font-weight: 900;
+  font-size: 12px;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  text-decoration:none;
+
+  box-shadow:
+    0 10px 34px rgba(0,0,0,.30),
+    0 0 18px rgba(212,170,90,.10);
+
+  transition: transform .12s ease, filter .18s ease, box-shadow .18s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body.archive .vip-status__renew:hover{
+  filter: brightness(1.03);
+  transform: translateY(-1px);
+  box-shadow:
+    0 14px 46px rgba(0,0,0,.34),
+    0 0 24px rgba(212,170,90,.14);
+}
+
+body.archive .vip-status__renew:active{
+  transform: translateY(1px);
+}
+
+/* Mobile */
+@media (max-width:560px){
+  body.archive .vip-status{
+    padding: 12px 14px 11px;
+    border-radius: 14px;
+  }
+  body.archive .vip-status__meta{
+    font-size: 12px;
+  }
+  body.archive .vip-status__renew{
+    padding: 6px 11px;
+    font-size: 11.5px;
+  }
+}
+/* forza l'hidden anche se hai display:inline-flex nella classe */
+.vip-status__renew[hidden]{
+  display:none !important;
+}
+/* =========================================================
+   CTA "ACQUISTA CONTENUTI" — FIX UNICO (no conflitti)
+   - titolo centrato perfetto
+   - sottotitolo centrato
+   - icona Telegram vicino alla parola "Telegram"
+   - cerchio uniforme (non tagliato)
+   ========================================================= */
+
+body.archive .archive-cta{
+  width:100%;
+  margin: 10px 0 14px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  align-items:center;
+}
+
+/* CTA button */
+body.archive .archive-btn--cta2{
+  width:100%;
+  height:auto !important;                 /* IMPORTANT: niente altezza fissa */
+  min-height: 76px;                       /* “corpo” premium */
+  padding:16px 18px !important;
+
+  display:flex !important;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+
+  position:relative;
+  overflow:hidden;
+
+  border:0 !important;
+  border-radius:16px;
+
+  background: linear-gradient(180deg, rgba(212,170,90,1), rgba(180,135,55,1)) !important;
+  color: rgba(8,8,8,.96) !important;
+
+  font-family: system-ui, -apple-system, Arial, sans-serif;
+  font-weight: 900;
+
+  box-shadow:
+    0 26px 90px rgba(0,0,0,.52),
+    0 0 0 1px rgba(212,170,90,.18),
+    0 0 44px rgba(212,170,90,.22),
+    inset 0 1px 0 rgba(255,255,255,.32) !important;
+
+  text-decoration:none !important;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* shine */
+body.archive .archive-btn--cta2::before{
+  content:"";
+  position:absolute;
+  inset:-40% -60%;
+  background: linear-gradient(120deg,
+    transparent 30%,
+    rgba(255,255,255,.22) 46%,
+    transparent 62%
+  );
+  transform: translateX(-40%) rotate(12deg);
+  opacity:.9;
+  pointer-events:none;
+  transition: transform .75s ease;
+}
+body.archive .archive-btn--cta2:hover::before{
+  transform: translateX(40%) rotate(12deg);
+}
+
+/* riga titolo */
+body.archive .archive-btn--cta2 .cta-title{
+  display:block;
+  font-weight:900;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  line-height:1.1;
+  text-align:center;
+}
+
+/* riga sotto */
+body.archive .archive-btn--cta2 .cta-sub{
+  display:block;
+  font-size:12.2px;
+  font-weight:700;
+  letter-spacing:0;
+  text-transform:none;
+  opacity:.82;
+  line-height:1.15;
+  text-align:center;
+}
+
+/* “Telegram + icona” attaccati */
+body.archive .archive-btn--cta2 .tg-inline{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;                       /* quasi attaccata */
+  white-space:nowrap;
+}
+
+/* Cerchio perfetto (non tagliato) */
+body.archive .archive-btn--cta2 .tg-badge{
+  width:20px;                    /* leggermente più grande */
+  height:20px;
+  border-radius:999px;
+  background:#229ED9;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  line-height:0;
+  flex:0 0 auto;
+}
+
+/* aeroplanino bianco */
+body.archive .archive-btn--cta2 .tg-plane{
+  width:12px;
+  height:12px;
+  display:block;
+  fill:#fff;
+}
+
+/* mobile */
+@media (max-width:560px){
+  body.archive .archive-btn--cta2{
+    min-height: 56px;
+    padding:12px 14px !important;
+  }
+  body.archive .archive-btn--cta2 .cta-sub{
+    font-size:11.6px;
+  }
+  body.archive .archive-btn--cta2 .tg-badge{
+    width:19px;
+    height:19px;
+  }
+  body.archive .archive-btn--cta2 .tg-plane{
+    width:11.5px;
+    height:11.5px;
+  }
+}
+/* =========================================================
+   CTA PRINCIPALE – ENFASI VISIVA (SAFE)
+   ========================================================= */
+
+/* Glow più forte SOLO sul bottone Acquista Contenuti */
+body.archive .archive-btn--cta2{
+  box-shadow:
+    0 30px 100px rgba(0,0,0,.55),
+    0 0 0 1px rgba(212,170,90,.22),
+    0 0 60px rgba(212,170,90,.28),
+    inset 0 1px 0 rgba(255,255,255,.35) !important;
+}
+
+/* Pulsazione lenta, elegante */
+@keyframes softGlow {
+  0%,100% { box-shadow:
+    0 30px 100px rgba(0,0,0,.55),
+    0 0 40px rgba(212,170,90,.22); }
+  50% { box-shadow:
+    0 30px 100px rgba(0,0,0,.55),
+    0 0 70px rgba(212,170,90,.35); }
+}
+
+body.archive .archive-btn--cta2{
+  animation: softGlow 4.5s ease-in-out infinite;
+}
+/* =========================================================
+   CTA HERO – DIFFERENZIAZIONE REALE
+   ========================================================= */
+
+/* Acquista Contenuti = più importante */
+body.archive .archive-btn--cta2{
+  min-height: 82px;              /* più alto */
+  margin-bottom: 18px;           /* più respiro sotto */
+  transform: scale(1.02);        /* micro boost visivo */
+}
+
+/* Foto / Video leggermente più bassi */
+body.archive .archive-hub .archive-btn{
+  min-height: 64px;
+  transform: scale(1);
+}
+
+/* Mobile */
+@media (max-width:560px){
+  body.archive .archive-btn--cta2{
+    min-height: 64px;
+    transform: scale(1.015);
+  }
+}
+/* === CTA effetto gioiello (sparkle discreto sui bordi) === */
+body.archive .archive-btn--cta2{
+  position: relative;
+}
+
+/* micro brillantini */
+body.archive .archive-btn--cta2::after{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  border-radius:18px;
+  pointer-events:none;
+
+  background:
+    radial-gradient(circle at 15% 25%, rgba(255,255,255,.55), transparent 35%),
+    radial-gradient(circle at 85% 30%, rgba(255,255,255,.45), transparent 40%),
+    radial-gradient(circle at 30% 80%, rgba(255,255,255,.35), transparent 45%),
+    radial-gradient(circle at 75% 75%, rgba(255,255,255,.4), transparent 40%);
+
+  opacity:.35;
+  mix-blend-mode: screen;
+}
+/* Spazio extra tra Telegram e Codice VIP su mobile */
+.login-form + .login-form {
+  margin-top: 20px;
+}
+
+/* Bottone Telegram leggermente più compatto */
+#btnTelegram {
+  padding: 12px 16px;
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+
+/* "oppure" con più respiro */
+.login-divider {
+  margin: 22px 0;
+}
+/* =========================================================
+   LOGIN — TELEGRAM BUTTON + DIVIDER (VERSIONE UNICA)
+   ========================================================= */
+
+/* Telegram button: blu più chiaro + feel premium */
+body.login .tg-btn{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+
+  background: linear-gradient(180deg, #4aa3ff, #2a7df0);
+  color: rgba(255,255,255,.95);
+
+  box-shadow:
+    0 14px 50px rgba(0,0,0,.35),
+    inset 0 1px 0 rgba(255,255,255,.22);
+}
+
+/* Icona Telegram: più piccola + reset baseline */
+body.login .tg-btn .tg-icon{
+  display:block;
+  width:18px;
+  height:18px;
+  flex:0 0 auto;
+  margin:0;
+  padding:0;
+  transform:none;
+}
+
+/* Testo Telegram */
+body.login .tg-btn .tg-text{
+  display:block;
+  line-height:1;
+  font-weight:900;
+  letter-spacing:.6px;
+  font-size:14px;
+}
+
+/* Divider: line — OR USE — line (NO box / NO artefatti) */
 body.login .login-divider{
   display:flex;
   align-items:center;
@@ -222,13 +1395,22 @@ body.login .login-divider{
   gap:16px;
   margin:18px 0 16px;
 
-  background:transparent !important;
-  border:0 !important;
-  box-shadow:none !important;
-  backdrop-filter:none !important;
-  -webkit-backdrop-filter:none !important;
+  /* reset totale */
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  border: 0 !important;
+
+  /* elimina “sottosfondo”/artefatti da gradient+blur */
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  isolation: isolate;
+
+  height:auto !important;
+  line-height:1;
 }
 
+/* Le due linee */
 body.login .login-divider::before,
 body.login .login-divider::after{
   content:"";
@@ -237,70 +1419,2711 @@ body.login .login-divider::after{
   background: rgba(255,255,255,.12);
 }
 
+/* Testo centrale: ZERO sfondo */
 body.login .login-divider span{
+  display:inline-block;
+
+  padding:0 !important;
+  margin:0 !important;
+
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow:none !important;
+  border:0 !important;
+  outline:0 !important;
+
   color: rgba(212,170,90,.78);
   font-family:"Cinzel", serif;
-  font-size: 10px;
-  letter-spacing: 1.8px;
+  font-size:12px;
+  letter-spacing:1px;
   text-transform: uppercase;
-  opacity:.7;
+  line-height:1;
 }
 
-/* ---------- Signup row (Not a member?) ---------- */
-body.login .signup-row{
-  width:100%;
+/* Mobile: micro respiro */
+@media (max-width:560px){
+  body.login .login-divider{ margin:16px 0 14px; }
+}
+/* OR USE – opzione 2: elegante ma visibile */
+body.login .login-divider span{
+  font-size: 9.5px;              /* più piccolo */
+  letter-spacing: 1.8px;          /* più “inciso” */
+  opacity: .65;                   /* meno invadente */
+}
+/* === ARCHIVE: CTA in stile Telegram (solo colore) === */
+.archive-btn--telegram{
+  background: linear-gradient(135deg,#229ED9 0%, #1C8ACB 55%, #187AB8 100%);
+}
+
+/* Non cambia il tuo effetto scintillante: al massimo un micro boost */
+.archive-btn--telegram:hover{
+  filter: brightness(1.05);
+}
+
+/* Badge: niente cerchio, solo plane bianco */
+.tg-badge--img{
+  background: transparent !important;
+  box-shadow: none !important;
+  border: 0 !important;
+  padding: 0 !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tg-plane-img{
+  display: block;
+  width: 18px;
+  height: 18px;
+}
+/* =========================================================
+   PATCH DEFINITIVA: CTA "ACQUISTA CONTENUTI" BLU TELEGRAM
+   - override forte (vince sui background gold !important)
+   - shine hover su desktop
+   - shine continuo su mobile (touch)
+   ========================================================= */
+
+/* 1) Colore blu Telegram (stesso feel del login) */
+body.archive .archive-btn--cta2.archive-btn--telegram{
+  background: linear-gradient(180deg, #4aa3ff, #2a7df0) !important;
+  color: rgba(255,255,255,.95) !important;
+
+  /* glow blu (lascia tutte le animazioni/effetti già presenti) */
+  box-shadow:
+    0 30px 100px rgba(0,0,0,.55),
+    0 0 0 1px rgba(74,163,255,.22),
+    0 0 60px rgba(42,125,240,.28),
+    inset 0 1px 0 rgba(255,255,255,.30) !important;
+}
+
+/* 2) Hover/focus: identico effetto, solo blu */
+body.archive .archive-btn--cta2.archive-btn--telegram:hover,
+body.archive .archive-btn--cta2.archive-btn--telegram:focus,
+body.archive .archive-btn--cta2.archive-btn--telegram:focus-visible{
+  filter: brightness(1.05);
+  box-shadow:
+    0 34px 110px rgba(0,0,0,.58),
+    0 0 0 3px rgba(74,163,255,.14),
+    0 0 34px rgba(42,125,240,.22),
+    inset 0 1px 0 rgba(255,255,255,.34) !important;
+}
+
+/* 3) Pulsazione lenta (versione blu) SOLO per questo bottone */
+@keyframes softGlowBlue{
+  0%,100%{
+    box-shadow:
+      0 30px 100px rgba(0,0,0,.55),
+      0 0 44px rgba(74,163,255,.18);
+  }
+  50%{
+    box-shadow:
+      0 30px 100px rgba(0,0,0,.55),
+      0 0 78px rgba(42,125,240,.30);
+  }
+}
+
+body.archive .archive-btn--cta2.archive-btn--telegram{
+  animation: softGlowBlue 4.5s ease-in-out infinite;
+}
+
+/* 4) Shine: su desktop resta "on hover" (come ora) */
+body.archive .archive-btn--cta2.archive-btn--telegram::before{
+  /* manteniamo il tuo shine, ma un filo più "ice" */
+  background: linear-gradient(120deg,
+    transparent 30%,
+    rgba(255,255,255,.26) 46%,
+    transparent 62%
+  );
+}
+
+/* 5) Mobile: shine SEMPRE attivo (touch devices) */
+@keyframes tgShineSweep{
+  0%   { transform: translateX(-40%) rotate(12deg); }
+  100% { transform: translateX(40%) rotate(12deg); }
+}
+
+/* Target vero mobile/touch (meglio di solo max-width) */
+@media (hover: none) and (pointer: coarse){
+  body.archive .archive-btn--cta2.archive-btn--telegram::before{
+    transition: none !important;
+    animation: tgShineSweep 2.8s ease-in-out infinite;
+  }
+  /* evita “tap highlight” e micro flash */
+  body.archive .archive-btn--cta2.archive-btn--telegram{
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* 6) Icona PNG: assicurati che non venga “sporcata” da vecchie regole */
+body.archive .archive-btn--cta2.archive-btn--telegram .tg-badge--img{
+  background: transparent !important;
+  box-shadow: none !important;
+  border: 0 !important;
+}
+/* =========================================================
+   LOGIN – ALLINEAMENTO SPAZI TELEGRAM ↔ OR USE ↔ VIP CODE
+   ========================================================= */
+
+/* Spazio sotto il bottone Telegram */
+body.login .login-form.tg-login{
+  margin-bottom: 12px !important;
+}
+
+/* OR USE: distanza bilanciata sopra e sotto */
+body.login .login-divider{
+  margin-top: 12px !important;
+  margin-bottom: 16px;
+}
+
+/* Se il testo di stato Telegram è vuoto, non deve occupare spazio */
+#tgStatus:empty{
+  display: none !important;
+}
+/* =========================================================
+   LOGIN – SPAZI COERENTI TRA TELEGRAM / OR USE / VIP CODE
+   ========================================================= */
+
+/* 1️⃣ Uniformiamo lo spacing usando GAP, non margin */
+body.login .login-card {
+  display: flex;
+  flex-direction: column;
+  gap: 18px; /* ← questo è lo spazio “master” */
+}
+
+/* 2️⃣ Rimuoviamo spacing locali che falsano i confronti */
+body.login .login-form.tg-login {
+  margin: 0 !important;
+}
+
+body.login .login-divider {
+  margin: 0 !important;
+}
+
+/* 3️⃣ Se il testo di stato Telegram è vuoto, non deve occupare spazio */
+#tgStatus:empty {
+  display: none !important;
+}
+/* =========================================================
+   LOGIN — CTA "BECOME A VIP"
+   ========================================================= */
+body.login .vip-cta{
+  width: 100%;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255,255,255,.10);
+  text-align: center;
+}
+
+body.login .vip-cta-title{
+  font-family: "Cinzel", serif;
+  font-size: 10.5px;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: rgba(212,170,90,.70);
+  margin: 0 0 10px 0;
+}
+
+/* bottone premium outline */
+body.login .vip-cta-btn{
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 13px 16px;
+  border-radius: 16px;
+
+  background: rgba(0,0,0,.18);
+  border: 1px solid rgba(212,170,90,.55);
+  color: rgba(212,170,90,.95);
+
+  font-weight: 900;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  text-decoration: none;
+
+  box-shadow:
+    0 14px 50px rgba(0,0,0,.35),
+    0 0 0 1px rgba(212,170,90,.12),
+    0 0 26px rgba(212,170,90,.10),
+    inset 0 1px 0 rgba(255,255,255,.08);
+
+  transition: transform .12s ease, filter .18s ease, box-shadow .18s ease, background .18s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body.login .vip-cta-btn:hover{
+  transform: translateY(-1px);
+  background: rgba(212,170,90,.08);
+  filter: brightness(1.02);
+  box-shadow:
+    0 18px 70px rgba(0,0,0,.42),
+    0 0 0 3px rgba(212,170,90,.10),
+    0 0 34px rgba(212,170,90,.14),
+    inset 0 1px 0 rgba(255,255,255,.10);
+}
+
+body.login .vip-cta-btn:active{
+  transform: translateY(1px);
+}
+
+/* focus accessibilità */
+body.login .vip-cta-btn:focus,
+body.login .vip-cta-btn:focus-visible{
+  outline: none;
+  box-shadow:
+    0 18px 70px rgba(0,0,0,.42),
+    0 0 0 3px rgba(212,170,90,.16),
+    0 0 40px rgba(212,170,90,.18),
+    inset 0 1px 0 rgba(255,255,255,.12);
+}
+/* =========================================
+   FAVORITES — CUORE IDENTICO (NO EMOJI)
+   FOTO + VIDEO
+   ========================================= */
+
+.fav-btn{
+  position:absolute;
+  right:12px;
+  bottom:12px;
+
+  width:44px;
+  height:44px;
+  border-radius:999px;
+
   display:flex;
   align-items:center;
   justify-content:center;
-  gap:6px;
-  font-size:13px;
-  color: rgba(234,234,234,.82);
-}
-body.login .signup-link{
-  color: var(--gold-soft);
-  font-weight:800;
+
+  border:1px solid rgba(255,255,255,.18);
+  background: rgba(0,0,0,.35);
+  color: rgba(255,255,255,.78);
+
+  cursor:pointer;
+  padding:0;
+  line-height:0;
+
+  -webkit-tap-highlight-color: transparent;
+  appearance: none;
+  -webkit-appearance: none;
 }
 
-/* ---------- Legal ---------- */
+/* SVG cuore */
+.fav-btn .heart-icon{
+  width:18px;
+  height:18px;
+  display:block;
+}
+
+/* outline */
+.fav-btn .heart-icon path{
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+/* attivo */
+.fav-btn.is-on{
+  background: rgba(212,170,90,.28);
+  border-color: rgba(212,170,90,.45);
+  color: rgba(212,170,90,.95);
+}
+
+.fav-btn.is-on .heart-icon path{
+  fill: currentColor;
+}
+/* =========================================================
+   GALLERY (FOTO/VIDEO) — CTA "Acquista contenuti hot"
+   Stesso look + stessa animazione della CTA in ARCHIVE
+   (blu Telegram + softGlowBlue + shine + mobile shine)
+   ========================================================= */
+
+/* Base bottone in gallery (usa la tua classe HTML: btn-gold) */
+body.gallery .gallery-actions .btn-gold{
+  /* struttura */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 12px 16px;
+  border-radius: 999px;
+  border: 0 !important;
+  text-decoration: none !important;
+  -webkit-tap-highlight-color: transparent;
+
+  /* colore / feel = identico a archive telegram */
+  background: linear-gradient(180deg, #4aa3ff, #2a7df0) !important;
+  color: rgba(255,255,255,.95) !important;
+
+  /* glow blu */
+  box-shadow:
+    0 30px 100px rgba(0,0,0,.55),
+    0 0 0 1px rgba(74,163,255,.22),
+    0 0 60px rgba(42,125,240,.28),
+    inset 0 1px 0 rgba(255,255,255,.30) !important;
+
+  /* testo */
+  font-family: system-ui, -apple-system, Arial, sans-serif;
+  font-weight: 900;
+  letter-spacing: .02em;
+
+  /* serve per shine */
+  position: relative;
+  overflow: hidden;
+}
+
+/* hover/focus come archive */
+body.gallery .gallery-actions .btn-gold:hover,
+body.gallery .gallery-actions .btn-gold:focus,
+body.gallery .gallery-actions .btn-gold:focus-visible{
+  filter: brightness(1.05);
+  box-shadow:
+    0 34px 110px rgba(0,0,0,.58),
+    0 0 0 3px rgba(74,163,255,.14),
+    0 0 34px rgba(42,125,240,.22),
+    inset 0 1px 0 rgba(255,255,255,.34) !important;
+  outline: none;
+}
+
+/* pulsazione lenta identica (blu) */
+@keyframes softGlowBlue_gallery{
+  0%,100%{
+    box-shadow:
+      0 30px 100px rgba(0,0,0,.55),
+      0 0 44px rgba(74,163,255,.18);
+  }
+  50%{
+    box-shadow:
+      0 30px 100px rgba(0,0,0,.55),
+      0 0 78px rgba(42,125,240,.30);
+  }
+}
+
+/* applico animazione */
+body.gallery .gallery-actions .btn-gold{
+  animation: softGlowBlue_gallery 4.5s ease-in-out infinite;
+}
+
+/* shine (stesso “ice” del tuo archive telegram) */
+body.gallery .gallery-actions .btn-gold::before{
+  content:"";
+  position:absolute;
+  inset:-40% -60%;
+  background: linear-gradient(120deg,
+    transparent 30%,
+    rgba(255,255,255,.26) 46%,
+    transparent 62%
+  );
+  transform: translateX(-40%) rotate(12deg);
+  opacity:.9;
+  pointer-events:none;
+  transition: transform .75s ease;
+}
+
+/* desktop: shine on hover */
+body.gallery .gallery-actions .btn-gold:hover::before{
+  transform: translateX(40%) rotate(12deg);
+}
+
+/* mobile/touch: shine sempre attivo */
+@keyframes tgShineSweep_gallery{
+  0%   { transform: translateX(-40%) rotate(12deg); }
+  100% { transform: translateX(40%) rotate(12deg); }
+}
+
+@media (hover: none) and (pointer: coarse){
+  body.gallery .gallery-actions .btn-gold::before{
+    transition: none !important;
+    animation: tgShineSweep_gallery 2.8s ease-in-out infinite;
+  }
+  body.gallery .gallery-actions .btn-gold{
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+/* rende il double tap più “reattivo” su mobile */
+.modal-canvas{
+  touch-action: manipulation;
+}
+.vip-video,
+.modal video{
+  touch-action: manipulation;
+}
+/* 🔧 FIX: la shine non deve uscire dai bordi arrotondati */
+body.archive .archive-btn--cta2.archive-btn--telegram{
+  overflow: hidden;
+}
+
+body.archive .archive-btn--cta2.archive-btn--telegram::before{
+  border-radius: inherit;
+}
+/* =========================================================
+   ORDINA — FOTO (sort-panel)
+   ========================================================= */
+
+.sort-panel{
+  position:absolute;
+  top:100%;
+  right:0;
+  margin-top:10px;
+
+  min-width:220px;
+  padding:14px 14px 12px;
+
+  border-radius:16px;
+  border:1px solid rgba(212,170,90,.22);
+
+  background:
+    radial-gradient(600px 220px at 50% 0%, rgba(255,255,255,.10), transparent 60%),
+    linear-gradient(180deg, rgba(20,20,24,.96), rgba(10,10,14,.96));
+
+  box-shadow:
+    0 26px 90px rgba(0,0,0,.70),
+    0 0 0 1px rgba(212,170,90,.10),
+    0 0 26px rgba(212,170,90,.12);
+
+  z-index:12000;
+}
+
+.sort-section{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.sort-title{
+  font-family:"Cinzel", serif;
+  font-size:11px;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color: rgba(212,170,90,.78);
+  margin-bottom:6px;
+}
+
+.sort-opt{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:13px;
+  color: rgba(234,234,234,.85);
+  cursor:pointer;
+}
+
+.sort-opt input{
+  accent-color: rgba(212,170,90,1);
+}
+
+.sort-divider{
+  height:1px;
+  margin:12px 0;
+  background: rgba(255,255,255,.10);
+}
+:root{
+  --bg:#0b0b0f;
+  --panel:rgba(255,255,255,.06);
+  --panel2:rgba(255,255,255,.10);
+  --text:#eaeaea;
+  --muted:rgba(234,234,234,.82);
+  --border:rgba(255,255,255,.12);
+  --shadow:0 18px 60px rgba(0,0,0,.55);
+  --radius:18px;
+
+  /* gold */
+  --gold: rgba(212,170,90,1);
+  --gold-soft: rgba(212,170,90,.85);
+  --gold-glow: rgba(212,170,90,.45);
+}
+
+/* =========================================================
+   BASE
+   ========================================================= */
+*{ box-sizing:border-box; }
+html, body{ height:100%; }
+
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, Arial, sans-serif;
+  background:
+    radial-gradient(1200px 700px at 20% 0%, rgba(255,255,255,.06), transparent 60%),
+    radial-gradient(900px 600px at 80% 20%, rgba(255,255,255,.05), transparent 60%),
+    var(--bg);
+  color:var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.wrap{
+  max-width:1100px;
+  margin:0 auto;
+  padding:48px 22px;
+}
+
+h1{
+  margin:0 0 10px 0;
+  font-size: clamp(34px, 5vw, 56px);
+  letter-spacing:1px;
+}
+
+h2{
+  margin:26px 0 14px;
+  font-size: clamp(22px, 3.2vw, 32px);
+}
+
+.sub{
+  margin:0 0 18px 0;
+  color:var(--muted);
+}
+
+/* Link: evita “blu sottolineato” */
+a{ color: var(--gold-soft); text-decoration:none; }
+a:hover{ text-decoration: underline; }
+
+/* =========================================================
+   ROW / INPUT / BUTTON (generic)
+   ========================================================= */
+.row{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+
+input{
+  width:min(340px, 100%);
+  padding:12px 14px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  background:rgba(0,0,0,.28);
+  color:#fff;
+  outline:none;
+}
+
+button{
+  padding:12px 16px;
+  border-radius:12px;
+  border:0;
+  background:#fff;
+  color:#000;
+  font-weight:800;
+  cursor:pointer;
+}
+
+button:disabled{ opacity:.6; cursor:not-allowed; }
+.status{ margin-top:14px; }
+
+/* =========================================================
+   TOP ACTIONS
+   ========================================================= */
+.top-actions{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  margin:14px 0 18px;
+  flex-wrap:wrap;
+}
+
+.btn-ghost,
+.btn-lite,
+.logout{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:12px 16px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  background: rgba(255,255,255,.08);
+  color:#fff;
+  text-decoration:none;
+  font-weight:800;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* =========================================================
+   HUB
+   ========================================================= */
+.hub{
+  display:grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap:14px;
+  margin-top:18px;
+}
+
+.hub-btn{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  height:84px;
+  border-radius:16px;
+  border:1px solid var(--border);
+  background: linear-gradient(180deg, var(--panel2), var(--panel));
+  color:#fff;
+  font-weight:900;
+  text-decoration:none;
+  letter-spacing:.3px;
+  box-shadow: var(--shadow);
+  transition: transform .12s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.hub-btn:hover{ transform: translateY(-1px); }
+
+/* =========================================================
+   GRID / CARD
+   ========================================================= */
+.grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap:14px;
+  margin-top:12px;
+  align-items:start;
+}
+
+.card{
+  background: linear-gradient(180deg, var(--panel2), var(--panel));
+  border:1px solid var(--border);
+  border-radius: var(--radius);
+  overflow:hidden;
+  box-shadow: var(--shadow);
+  position:relative;
+  isolation:isolate;
+}
+
+/* ===== IMMAGINI (fallback img) ===== */
+.thumb{
+  width:100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display:block;
+  cursor:pointer;
+  background: rgba(0,0,0,.35);
+  user-select:none;
+  -webkit-user-select:none;
+  -webkit-touch-callout:none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ===== CANVAS (gallery.js) ===== */
+.thumb-canvas{
+  width:100%;
+  height:auto;
+  aspect-ratio: 1 / 1;
+  display:block;
+  cursor:pointer;
+  background: rgba(0,0,0,.35);
+  user-select:none;
+  -webkit-user-select:none;
+  -webkit-touch-callout:none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.card .cap{
+  padding:10px 12px;
+  font-size:14px;
+  color:var(--muted);
+}
+
+/* =========================================================
+   VIDEO
+   ========================================================= */
+.video-wrap{
+  position:relative;
+  width:100%;
+  aspect-ratio: 1 / 1;
+  background:#000;
+  overflow:hidden;
+  border-radius: var(--radius);
+  contain: layout paint;
+}
+
+.vip-video{
+  width:100%;
+  height:100%;
+  object-fit: cover;
+  display:block;
+  background:#000;
+  cursor:pointer;
+  user-select:none;
+  -webkit-user-select:none;
+  -webkit-touch-callout:none;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;
+  will-change: transform;
+}
+
+/* =========================================================
+   MODAL
+   ========================================================= */
+.modal{
+  position:fixed;
+  inset:0;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  background: rgba(0,0,0,.72);
+  z-index:9999;
+}
+.modal.open{ display:flex; }
+
+.modal-content{
+  width: min(980px, 96vw);
+  max-height:86vh;
+  border-radius:16px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.18);
+  box-shadow: 0 30px 120px rgba(0,0,0,.8);
+  background:#000;
+}
+
+.modal-wrap{ position:relative; width:100%; height:100%; }
+
+.modal-content img,
+.modal-content video{
+  width:100%;
+  height:100%;
+  max-height:86vh;
+  object-fit: contain;
+  display:block;
+  background:#000;
+}
+
+/* MODAL CANVAS */
+.modal-canvas{
+  max-width:92vw;
+  max-height:82vh;
+  width:auto;
+  height:auto;
+  display:block;
+  margin:0 auto;
+  border-radius:16px;
+  background:#000;
+}
+
+.modal-close{
+  position:absolute;
+  top:14px;
+  right:14px;
+  border:0;
+  border-radius:999px;
+  width:44px;
+  height:44px;
+  font-size:22px;
+  background: rgba(255,255,255,.14);
+  color:#fff;
+  cursor:pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* =========================================================
+   WATERMARK
+   ========================================================= */
+.wm{
+  position:absolute;
+  top:10px;
+  right:10px;
+  padding:6px 8px;
+  font-size:11px;
+  line-height:1.25;
+  letter-spacing:.2px;
+  border-radius:12px;
+  background: rgba(0,0,0,.38);
+  border:1px solid rgba(255,255,255,.16);
+  color: rgba(255,255,255,.86);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  pointer-events:none;
+  user-select:none;
+  -webkit-user-select:none;
+  -webkit-touch-callout:none;
+  white-space: pre-line;
+  opacity:.85;
+}
+
+.wm--modal{
+  top:14px;
+  right:14px;
+  font-size:12px;
+  opacity:.92;
+  background: rgba(0,0,0,.48);
+}
+
+/* watermark centrale (solo VIP code) */
+.wm--center{
+  top:50%;
+  left:50%;
+  right:auto;
+  transform: translate(-50%, -50%) rotate(-12deg);
+  padding:0;
+  background: transparent;
+  border:0;
+  font-size:12px;
+  letter-spacing:.28em;
+  font-weight:700;
+  text-transform:uppercase;
+  color: rgba(255,255,255,.20);
+  text-shadow: 0 1px 12px rgba(0,0,0,.25);
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
+  pointer-events:none;
+  white-space: nowrap;
+}
+
+/* =========================================================
+   “ANTI DOWNLOAD UI” (best effort)
+   ========================================================= */
+.vip-video::-webkit-media-controls-download-button{ display:none !important; }
+.vip-video::-webkit-media-controls-picture-in-picture-button{ display:none !important; }
+.vip-video::-webkit-media-controls-enclosure{ overflow:hidden !important; }
+
+/* =========================================================
+   MODAL NAV (PREV/NEXT)
+   ========================================================= */
+.modal-nav{
+  position:fixed;
+  top:50%;
+  transform: translateY(-50%);
+  width:54px;
+  height:54px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.18);
+  background: rgba(255,255,255,.12);
+  color:#fff;
+  font-size:34px;
+  line-height:1;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  z-index:10000;
+  -webkit-tap-highlight-color: transparent;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.modal-prev{ left:14px; }
+.modal-next{ right:14px; }
+.modal-nav:disabled{ opacity:.35; cursor:not-allowed; }
+
+/* =========================================================
+   LOGIN (solo index.html)
+   ========================================================= */
+body.login .wrap{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:42px 18px;
+  max-width:1200px;
+}
+
+body.login .login-card{
+  width:min(680px, 94vw);
+  border-radius:22px;
+  padding:34px 34px 26px;
+  background:
+    radial-gradient(900px 420px at 50% 0%, rgba(255,255,255,.10), transparent 58%),
+    linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+  border:1px solid rgba(255,255,255,.14);
+  box-shadow:0 26px 110px rgba(0,0,0,.70);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+body.login .login-head{
+  text-align:center;
+  margin-bottom:22px;
+}
+
+body.login .login-kicker{
+  font-family:"Cinzel", serif;
+  font-weight:500;
+  letter-spacing:3.4px;
+  font-size:44px;
+  text-transform:uppercase;
+  color:var(--gold);
+  text-shadow:
+    0 0 6px rgba(212,170,90,.25),
+    0 0 18px rgba(212,170,90,.18),
+    0 0 36px rgba(212,170,90,.12);
+  transition: text-shadow .25s ease, filter .25s ease;
+}
+
+body.login .login-name{
+  font-family:"Great Vibes", cursive;
+  font-size:46px;
+  margin-top:6px;
+  color:var(--gold-soft);
+}
+
+body.login .login-form{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  align-items:center;
+}
+
+body.login .field{
+  width:100%;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:10px 14px;
+  border-radius:14px;
+  border:1px solid rgba(212,170,90,.28);
+  background: rgba(0,0,0,.26);
+  transition: box-shadow .25s ease, border-color .25s ease;
+}
+
+body.login .field .icon{
+  color:var(--gold);
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  opacity:.95;
+}
+
+body.login #codeInput{
+  width:100%;
+  border:0;
+  background:transparent;
+  padding:0;
+  color:rgba(255,255,255,.92);
+  outline:none;
+  font-size:14px;
+  letter-spacing:.5px;
+}
+
+body.login #codeInput::placeholder{
+  color:rgba(212,170,90,.62);
+  letter-spacing:.8px;
+}
+
+body.login .field:focus-within{
+  border-color: rgba(212,170,90,.70);
+  box-shadow:
+    0 0 0 3px rgba(212,170,90,.14),
+    0 0 28px rgba(212,170,90,.12);
+}
+
+body.login:focus-within .login-kicker{
+  text-shadow:
+    0 0 10px rgba(212,170,90,.36),
+    0 0 26px rgba(212,170,90,.22),
+    0 0 52px rgba(212,170,90,.14);
+}
+
+body.login .login-btn{
+  width:100%;
+  padding:13px 16px;
+  border-radius:16px;
+  border:0;
+  background: linear-gradient(180deg, rgba(212,170,90,1), rgba(180,135,55,1));
+  color: rgba(10,10,10,.92);
+  font-weight:900;
+  letter-spacing:.6px;
+  cursor:pointer;
+}
+body.login .login-btn:active{ transform: translateY(1px); }
+
+body.login .login-divider{
+  height:1px;
+  background: rgba(255,255,255,.10);
+  margin:18px 0 16px;
+}
+
+/* Avviso come nota legale (ultra discreta) */
 body.login .legal{
   text-align:left;
-  margin-top:10px;
-  opacity:.78;
+  margin-top:6px;
+  opacity:.75;
 }
 
 body.login .legal-title{
   font-family:"Cinzel", serif;
   font-size:10.5px;
   letter-spacing:1px;
+  margin:0 0 2px 0;
   font-weight:600;
   text-transform:uppercase;
   color: rgba(212,170,90,.78);
-  margin:0 0 6px 0;
 }
 
 body.login .legal p{
-  margin:0 0 6px 0;
+  margin:0;
+  padding:0;
   font-size:10.6px;
   line-height:1.38;
-  max-width: 560px;
+  max-width: 540px;
   color: rgba(212,170,90,.66);
 }
 
 body.login .legal-copy{
-  margin-top:10px;
+  margin-top:8px;
   font-size:11px;
   color: rgba(212,170,90,.76);
 }
 
-/* Telegram status: se vuoto non occupa spazio */
-#tgStatus:empty{ display:none !important; }
+/* =========================================================
+   ARCHIVE (solo archive.html)
+   ========================================================= */
+body.archive .wrap{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:42px 18px;
+  max-width:1200px;
+}
 
-/* ---------- Mobile ---------- */
+body.archive .archive-card{
+  width:min(760px, 94vw);
+  border-radius:22px;
+  padding:34px 34px 26px;
+  background:
+    radial-gradient(900px 420px at 50% 0%, rgba(255,255,255,.10), transparent 58%),
+    linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+  border:1px solid rgba(255,255,255,.14);
+  box-shadow:0 26px 110px rgba(0,0,0,.70);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+body.archive .archive-head{
+  text-align:center;
+  margin-bottom:16px;
+}
+
+body.archive .archive-title{
+  margin:0;
+  font-family:"Cinzel", serif;
+  font-weight:600;
+  letter-spacing:3.2px;
+  text-transform:uppercase;
+  color:var(--gold);
+  font-size: clamp(32px, 4.6vw, 56px);
+  text-shadow:
+    0 0 6px rgba(212,170,90,.20),
+    0 0 18px rgba(212,170,90,.14),
+    0 0 36px rgba(212,170,90,.10);
+}
+
+body.archive .archive-name{
+  margin-top:8px;
+  font-family:"Great Vibes", cursive;
+  font-size: clamp(34px, 4.2vw, 48px);
+  color: var(--gold-soft);
+  text-shadow: 0 0 10px rgba(212,170,90,.18);
+}
+
+body.archive .archive-hub{
+  grid-template-columns: 1fr !important;
+  gap:12px;
+  margin-top:0;
+}
+
+body.archive .archive-btn{
+  height:72px;
+  border:0 !important;
+  border-radius:16px;
+  background: linear-gradient(180deg, rgba(212,170,90,1), rgba(180,135,55,1)) !important;
+  color: rgba(8,8,8,.96) !important;
+
+  font-family: system-ui, -apple-system, Arial, sans-serif;
+  font-weight: 900;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+
+  box-shadow:
+    0 18px 60px rgba(0,0,0,.45),
+    inset 0 1px 0 rgba(255,255,255,.28);
+
+  transition: transform .12s ease, box-shadow .22s ease, filter .22s ease;
+  text-decoration:none !important;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body.archive .archive-btn:hover{
+  transform: translateY(-1px);
+  filter: brightness(1.03);
+  box-shadow:
+    0 22px 80px rgba(0,0,0,.50),
+    0 0 0 3px rgba(212,170,90,.10),
+    0 0 28px rgba(212,170,90,.14),
+    inset 0 1px 0 rgba(255,255,255,.32);
+}
+
+body.archive .archive-btn:focus,
+body.archive .archive-btn:focus-visible{
+  outline:none;
+  filter: brightness(1.03);
+  box-shadow:
+    0 22px 80px rgba(0,0,0,.50),
+    0 0 0 3px rgba(212,170,90,.14),
+    0 0 34px rgba(212,170,90,.18),
+    inset 0 1px 0 rgba(255,255,255,.32);
+}
+
+body.archive .archive-btn:active{
+  transform: translateY(1px);
+  filter: brightness(0.99);
+}
+
+body.archive .archive-actions{
+  display:flex;
+  justify-content:center;
+  margin-top:14px;
+}
+
+body.archive .logout--small{
+  padding:10px 18px;
+  font-size:14px;
+  font-weight:900;
+  border-radius:999px;
+
+  background: rgba(212,170,90,.08);
+  border: 1px solid rgba(212,170,90,.22);
+  color: rgba(212,170,90,.92);
+
+  box-shadow:
+    0 14px 50px rgba(0,0,0,.35),
+    inset 0 1px 0 rgba(255,255,255,.10);
+
+  transition: transform .12s ease, box-shadow .22s ease, filter .22s ease, background .22s ease, border-color .22s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body.archive .logout--small:hover{
+  transform: translateY(-1px);
+  background: rgba(212,170,90,.11);
+  border-color: rgba(212,170,90,.32);
+  filter: brightness(1.02);
+  box-shadow:
+    0 18px 70px rgba(0,0,0,.42),
+    0 0 0 3px rgba(212,170,90,.10),
+    0 0 26px rgba(212,170,90,.12),
+    inset 0 1px 0 rgba(255,255,255,.12);
+}
+
+body.archive .logout--small:active{
+  transform: translateY(1px);
+}
+
+/* =========================================================
+   GALLERY (photos.html + videos.html)
+   ========================================================= */
+body.gallery .wrap{
+  min-height:100vh;
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  padding:42px 18px;
+  max-width:1200px;
+}
+
+body.gallery .gallery-card{
+  width:min(980px, 94vw);
+  border-radius:22px;
+  padding:30px 30px 26px;
+  background:
+    radial-gradient(900px 420px at 50% 0%, rgba(255,255,255,.10), transparent 58%),
+    linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+  border:1px solid rgba(255,255,255,.14);
+  box-shadow:0 26px 110px rgba(0,0,0,.70);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+body.gallery .gallery-head{
+  text-align:center;
+  margin-bottom:16px;
+}
+
+body.gallery .gallery-title{
+  margin:0;
+  font-family:"Cinzel", serif;
+  font-weight:600;
+  letter-spacing:3.2px;
+  text-transform:uppercase;
+  color:var(--gold);
+  font-size: clamp(28px, 4.2vw, 52px);
+  text-shadow:
+    0 0 6px rgba(212,170,90,.20),
+    0 0 18px rgba(212,170,90,.14),
+    0 0 36px rgba(212,170,90,.10);
+}
+
+body.gallery .gallery-name{
+  margin-top:8px;
+  font-family:"Great Vibes", cursive;
+  font-size: clamp(30px, 4vw, 46px);
+  color: var(--gold-soft);
+  text-shadow: 0 0 10px rgba(212,170,90,.18);
+}
+
+body.gallery .gallery-sub{
+  margin:10px auto 0;
+  max-width:680px;
+  font-size:13.5px;
+  line-height:1.35;
+  color: rgba(212,170,90,.62);
+  opacity:.95;
+}
+
+body.gallery .gallery-actions{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  align-items:center;
+  margin:16px 0 14px;
+  flex-wrap:wrap;
+}
+
+/* Glow oro su card */
+body.gallery .card{
+  border: 1px solid rgba(212,170,90,.16);
+  box-shadow:
+    0 18px 60px rgba(0,0,0,.55),
+    0 0 0 1px rgba(212,170,90,.10),
+    0 0 26px rgba(212,170,90,.10);
+  transition: transform .12s ease, box-shadow .22s ease, border-color .22s ease;
+}
+
+body.gallery .card:hover{
+  transform: translateY(-1px);
+  border-color: rgba(212,170,90,.24);
+  box-shadow:
+    0 22px 80px rgba(0,0,0,.58),
+    0 0 0 1px rgba(212,170,90,.14),
+    0 0 34px rgba(212,170,90,.14);
+}
+
+/* glow anche sul video wrapper */
+body.gallery .video-wrap{
+  box-shadow:
+    0 0 0 1px rgba(212,170,90,.12),
+    0 0 22px rgba(212,170,90,.10);
+}
+
+/* caption più premium */
+body.gallery .card .cap{
+  font-size:12.5px;
+  letter-spacing:.06em;
+  text-transform: uppercase;
+  opacity:.92;
+}
+
+/* =========================================================
+   RESPONSIVE (1 sola fonte di verità)
+   ========================================================= */
 @media (max-width:560px){
+  .hub{ grid-template-columns:1fr; }
   .wrap{ padding:34px 16px; }
+
+  .modal-nav{ width:46px; height:46px; font-size:28px; }
+  .modal-prev{ left:10px; }
+  .modal-next{ right:10px; }
 
   body.login .login-card{
     padding:28px 18px 22px;
     border-radius:20px;
+  }
+  body.login .login-kicker{ font-size:48px; }
+  body.login .login-name{ font-size:44px; }
+
+  body.archive .archive-card{
+    padding:28px 18px 22px;
+    border-radius:20px;
+  }
+  body.archive .archive-hub{ gap:10px; }
+  body.archive .archive-btn{
+    height:50px;
+    border-radius:14px;
+    font-size:13px;
+    letter-spacing:.12em;
+    box-shadow:
+      0 12px 34px rgba(0,0,0,.38),
+      inset 0 1px 0 rgba(255,255,255,.22);
+  }
+
+  body.gallery .gallery-card{
+    padding:24px 16px 18px;
+    border-radius:20px;
+  }
+  body.gallery .gallery-sub{
+    font-size:11.5px;
+    margin-top:8px;
+  }
+
+  /* layout grid mobile (opzionale, ma pulito) */
+  body.gallery.photos .grid{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap:10px;
+  }
+  body.gallery.videos .grid{
+    grid-template-columns: 1fr;
+    gap:12px;
+  }
+}
+
+@media (min-width:980px){
+  body.login .login-card{
+    width:min(760px, 78vw);
+    padding:40px 40px 28px;
+  }
+  body.login .login-kicker{ font-size:55px; }
+  body.login .login-name{ font-size:50px; }
+}
+
+/* =========================================================
+   PATCH: GALLERY actions (Indietro sx / Esci dx) + hide hint
+   ========================================================= */
+
+/* 1) Barra bottoni: sinistra/destra */
+body.gallery .gallery-actions{
+  justify-content:space-between;   /* Indietro a sx, Esci a dx */
+  width:100%;
+}
+
+/* 1b) Bottoni in gallery = stessa grafica del tasto "Esci" in archive */
+body.gallery .gallery-actions a,
+body.gallery .gallery-actions button{
+  padding:10px 18px;
+  font-size:14px;
+  font-weight:900;
+  border-radius:999px;
+
+  background: rgba(212,170,90,.08);
+  border: 1px solid rgba(212,170,90,.22);
+  color: rgba(212,170,90,.92);
+
+  box-shadow:
+    0 14px 50px rgba(0,0,0,.35),
+    inset 0 1px 0 rgba(255,255,255,.10);
+
+  transition: transform .12s ease, box-shadow .22s ease, filter .22s ease, background .22s ease, border-color .22s ease;
+  -webkit-tap-highlight-color: transparent;
+
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+}
+
+body.gallery .gallery-actions a:hover,
+body.gallery .gallery-actions button:hover{
+  transform: translateY(-1px);
+  background: rgba(212,170,90,.11);
+  border-color: rgba(212,170,90,.32);
+  filter: brightness(1.02);
+  box-shadow:
+    0 18px 70px rgba(0,0,0,.42),
+    0 0 0 3px rgba(212,170,90,.10),
+    0 0 26px rgba(212,170,90,.12),
+    inset 0 1px 0 rgba(255,255,255,.12);
+}
+
+body.gallery .gallery-actions a:active,
+body.gallery .gallery-actions button:active{
+  transform: translateY(1px);
+}
+
+/* 2) Rimuove il testo "Tocca una foto..." / "Tocca un video..." */
+body.gallery .gallery-sub{
+  display:none !important;
+}
+
+/* Mobile: tieni comunque sx/dx (non centrare) */
+@media (max-width:560px){
+  body.gallery .gallery-actions{
+    justify-content:space-between;
+    gap:10px;
+  }
+}
+
+/* =========================================================
+   VIDEO mobile → 2 colonne come FOTO
+   ========================================================= */
+@media (max-width:560px){
+
+  /* forza 2 colonne anche per i video */
+  body.gallery.videos .grid{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap:10px;
+  }
+
+  /* mantiene il formato quadrato pulito */
+  body.gallery.videos .video-wrap{
+    aspect-ratio: 1 / 1;
+  }
+
+}
+
+@media (max-width:560px){
+
+  /* ===== TITOLI FOTO / VIDEO (più grandi su mobile) ===== */
+  body.gallery .gallery-title{
+    font-size: 34px;
+    letter-spacing: 3.6px;
+  }
+
+  body.gallery .gallery-name{
+    font-size: 40px;
+    margin-top: 6px;
+  }
+
+  /* ===== GRID VIDEO = 2 colonne come FOTO ===== */
+  body.gallery.videos .grid{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  /* ===== GRID FOTO (resta uguale, solo ribadito) ===== */
+  body.gallery.photos .grid{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+}
+
+/* Nasconde il titolo sotto i video (VIDEO VIP 01, 02, ecc.) */
+body.gallery.videos .card .cap{
+  display: none !important;
+}
+/* =========================================================
+   BADGE NEW (video/photo) — UNICA VERSIONE (verde, a destra)
+   ========================================================= */
+.badge-new{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  left: auto;
+  z-index: 5;
+
+  background: linear-gradient(135deg, #1f7f5c, #2fbf8f);
+  color: #ffffff;
+
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  padding: 4px 9px;
+  border-radius: 999px;
+
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.25),
+    0 4px 12px rgba(47,191,143,0.45);
+
+  pointer-events: none;
+  user-select: none;
+}
+/* =========================================================
+   VIP STATUS (solo archive.html) — UNICA VERSIONE
+   - pallino perfettamente allineato a "STATO ACCESSO"
+   - riga scadenza sempre visibile
+   - bottone rinnova piccolo (solo quando mostrato da JS)
+   ========================================================= */
+
+body.archive .vip-status{
+  width:100%;
+  margin: 14px 0 12px;
+  padding: 14px 16px 12px;
+  border-radius: 16px;
+
+  background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+  border: 1px solid rgba(47,191,143,.22);
+  box-shadow:
+    0 16px 56px rgba(0,0,0,.42),
+    0 0 0 1px rgba(47,191,143,.10),
+    0 0 26px rgba(47,191,143,.10);
+
+  text-align:left;
+}
+
+body.archive .vip-status__top{
+  display:flex;
+  align-items:center;        /* allineamento verticale */
+  gap:10px;
+  margin-bottom:8px;
+}
+
+body.archive .vip-status__dot{
+  width:10px;
+  height:10px;
+  border-radius:999px;
+  background:#2fbf8f;
+  box-shadow:
+    0 0 0 2px rgba(47,191,143,.18),
+    0 0 16px rgba(47,191,143,.55);
+
+  /* micro aggiustamento per match perfetto col testo */
+  position: relative;
+  top: -0.5px;
+  flex: 0 0 auto;
+}
+
+body.archive .vip-status__label{
+  font-family:"Cinzel", serif;
+  font-size: 11px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: rgba(212,170,90,.72);
+
+  line-height: 1;           /* evita che il testo "scenda" */
+  margin: 0;
+}
+
+body.archive .vip-status__meta{
+  font-size: 13px;
+  color: rgba(234,234,234,.82);
+  line-height: 1.25;
+}
+
+/* bottone rinnova: più piccolo e premium */
+body.archive .vip-status__renew{
+  margin-top:10px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  padding: 7px 12px;        /* più piccolo */
+  border-radius:999px;
+
+  border: 1px solid rgba(212,170,90,.26);
+  background: rgba(212,170,90,.10);
+  color: rgba(212,170,90,.95);
+
+  font-weight: 900;
+  font-size: 12px;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  text-decoration:none;
+
+  box-shadow:
+    0 10px 34px rgba(0,0,0,.30),
+    0 0 18px rgba(212,170,90,.10);
+
+  transition: transform .12s ease, filter .18s ease, box-shadow .18s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body.archive .vip-status__renew:hover{
+  filter: brightness(1.03);
+  transform: translateY(-1px);
+  box-shadow:
+    0 14px 46px rgba(0,0,0,.34),
+    0 0 24px rgba(212,170,90,.14);
+}
+
+body.archive .vip-status__renew:active{
+  transform: translateY(1px);
+}
+
+/* Mobile */
+@media (max-width:560px){
+  body.archive .vip-status{
+    padding: 12px 14px 11px;
+    border-radius: 14px;
+  }
+  body.archive .vip-status__meta{
+    font-size: 12px;
+  }
+  body.archive .vip-status__renew{
+    padding: 6px 11px;
+    font-size: 11.5px;
+  }
+}
+/* forza l'hidden anche se hai display:inline-flex nella classe */
+.vip-status__renew[hidden]{
+  display:none !important;
+}
+/* =========================================================
+   CTA "ACQUISTA CONTENUTI" — FIX UNICO (no conflitti)
+   - titolo centrato perfetto
+   - sottotitolo centrato
+   - icona Telegram vicino alla parola "Telegram"
+   - cerchio uniforme (non tagliato)
+   ========================================================= */
+
+body.archive .archive-cta{
+  width:100%;
+  margin: 10px 0 14px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  align-items:center;
+}
+
+/* CTA button */
+body.archive .archive-btn--cta2{
+  width:100%;
+  height:auto !important;                 /* IMPORTANT: niente altezza fissa */
+  min-height: 76px;                       /* “corpo” premium */
+  padding:16px 18px !important;
+
+  display:flex !important;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+
+  position:relative;
+  overflow:hidden;
+
+  border:0 !important;
+  border-radius:16px;
+
+  background: linear-gradient(180deg, rgba(212,170,90,1), rgba(180,135,55,1)) !important;
+  color: rgba(8,8,8,.96) !important;
+
+  font-family: system-ui, -apple-system, Arial, sans-serif;
+  font-weight: 900;
+
+  box-shadow:
+    0 26px 90px rgba(0,0,0,.52),
+    0 0 0 1px rgba(212,170,90,.18),
+    0 0 44px rgba(212,170,90,.22),
+    inset 0 1px 0 rgba(255,255,255,.32) !important;
+
+  text-decoration:none !important;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* shine */
+body.archive .archive-btn--cta2::before{
+  content:"";
+  position:absolute;
+  inset:-40% -60%;
+  background: linear-gradient(120deg,
+    transparent 30%,
+    rgba(255,255,255,.22) 46%,
+    transparent 62%
+  );
+  transform: translateX(-40%) rotate(12deg);
+  opacity:.9;
+  pointer-events:none;
+  transition: transform .75s ease;
+}
+body.archive .archive-btn--cta2:hover::before{
+  transform: translateX(40%) rotate(12deg);
+}
+
+/* riga titolo */
+body.archive .archive-btn--cta2 .cta-title{
+  display:block;
+  font-weight:900;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  line-height:1.1;
+  text-align:center;
+}
+
+/* riga sotto */
+body.archive .archive-btn--cta2 .cta-sub{
+  display:block;
+  font-size:12.2px;
+  font-weight:700;
+  letter-spacing:0;
+  text-transform:none;
+  opacity:.82;
+  line-height:1.15;
+  text-align:center;
+}
+
+/* “Telegram + icona” attaccati */
+body.archive .archive-btn--cta2 .tg-inline{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;                       /* quasi attaccata */
+  white-space:nowrap;
+}
+
+/* Cerchio perfetto (non tagliato) */
+body.archive .archive-btn--cta2 .tg-badge{
+  width:20px;                    /* leggermente più grande */
+  height:20px;
+  border-radius:999px;
+  background:#229ED9;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  line-height:0;
+  flex:0 0 auto;
+}
+
+/* aeroplanino bianco */
+body.archive .archive-btn--cta2 .tg-plane{
+  width:12px;
+  height:12px;
+  display:block;
+  fill:#fff;
+}
+
+/* mobile */
+@media (max-width:560px){
+  body.archive .archive-btn--cta2{
+    min-height: 56px;
+    padding:12px 14px !important;
+  }
+  body.archive .archive-btn--cta2 .cta-sub{
+    font-size:11.6px;
+  }
+  body.archive .archive-btn--cta2 .tg-badge{
+    width:19px;
+    height:19px;
+  }
+  body.archive .archive-btn--cta2 .tg-plane{
+    width:11.5px;
+    height:11.5px;
+  }
+}
+/* =========================================================
+   CTA PRINCIPALE – ENFASI VISIVA (SAFE)
+   ========================================================= */
+
+/* Glow più forte SOLO sul bottone Acquista Contenuti */
+body.archive .archive-btn--cta2{
+  box-shadow:
+    0 30px 100px rgba(0,0,0,.55),
+    0 0 0 1px rgba(212,170,90,.22),
+    0 0 60px rgba(212,170,90,.28),
+    inset 0 1px 0 rgba(255,255,255,.35) !important;
+}
+
+/* Pulsazione lenta, elegante */
+@keyframes softGlow {
+  0%,100% { box-shadow:
+    0 30px 100px rgba(0,0,0,.55),
+    0 0 40px rgba(212,170,90,.22); }
+  50% { box-shadow:
+    0 30px 100px rgba(0,0,0,.55),
+    0 0 70px rgba(212,170,90,.35); }
+}
+
+body.archive .archive-btn--cta2{
+  animation: softGlow 4.5s ease-in-out infinite;
+}
+/* =========================================================
+   CTA HERO – DIFFERENZIAZIONE REALE
+   ========================================================= */
+
+/* Acquista Contenuti = più importante */
+body.archive .archive-btn--cta2{
+  min-height: 82px;              /* più alto */
+  margin-bottom: 18px;           /* più respiro sotto */
+  transform: scale(1.02);        /* micro boost visivo */
+}
+
+/* Foto / Video leggermente più bassi */
+body.archive .archive-hub .archive-btn{
+  min-height: 64px;
+  transform: scale(1);
+}
+
+/* Mobile */
+@media (max-width:560px){
+  body.archive .archive-btn--cta2{
+    min-height: 64px;
+    transform: scale(1.015);
+  }
+}
+/* === CTA effetto gioiello (sparkle discreto sui bordi) === */
+body.archive .archive-btn--cta2{
+  position: relative;
+}
+
+/* micro brillantini */
+body.archive .archive-btn--cta2::after{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  border-radius:18px;
+  pointer-events:none;
+
+  background:
+    radial-gradient(circle at 15% 25%, rgba(255,255,255,.55), transparent 35%),
+    radial-gradient(circle at 85% 30%, rgba(255,255,255,.45), transparent 40%),
+    radial-gradient(circle at 30% 80%, rgba(255,255,255,.35), transparent 45%),
+    radial-gradient(circle at 75% 75%, rgba(255,255,255,.4), transparent 40%);
+
+  opacity:.35;
+  mix-blend-mode: screen;
+}
+/* Spazio extra tra Telegram e Codice VIP su mobile */
+.login-form + .login-form {
+  margin-top: 20px;
+}
+
+/* Bottone Telegram leggermente più compatto */
+#btnTelegram {
+  padding: 12px 16px;
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+
+/* "oppure" con più respiro */
+.login-divider {
+  margin: 22px 0;
+}
+/* =========================================================
+   LOGIN — TELEGRAM BUTTON + DIVIDER (VERSIONE UNICA)
+   ========================================================= */
+
+/* Telegram button: blu più chiaro + feel premium */
+body.login .tg-btn{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+
+  background: linear-gradient(180deg, #4aa3ff, #2a7df0);
+  color: rgba(255,255,255,.95);
+
+  box-shadow:
+    0 14px 50px rgba(0,0,0,.35),
+    inset 0 1px 0 rgba(255,255,255,.22);
+}
+
+/* Icona Telegram: più piccola + reset baseline */
+body.login .tg-btn .tg-icon{
+  display:block;
+  width:18px;
+  height:18px;
+  flex:0 0 auto;
+  margin:0;
+  padding:0;
+  transform:none;
+}
+
+/* Testo Telegram */
+body.login .tg-btn .tg-text{
+  display:block;
+  line-height:1;
+  font-weight:900;
+  letter-spacing:.6px;
+  font-size:14px;
+}
+
+/* Divider: line — OR USE — line (NO box / NO artefatti) */
+body.login .login-divider{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:16px;
+  margin:18px 0 16px;
+
+  /* reset totale */
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  border: 0 !important;
+
+  /* elimina “sottosfondo”/artefatti da gradient+blur */
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  isolation: isolate;
+
+  height:auto !important;
+  line-height:1;
+}
+
+/* Le due linee */
+body.login .login-divider::before,
+body.login .login-divider::after{
+  content:"";
+  flex:1 1 auto;
+  height:1px;
+  background: rgba(255,255,255,.12);
+}
+
+/* Testo centrale: ZERO sfondo */
+body.login .login-divider span{
+  display:inline-block;
+
+  padding:0 !important;
+  margin:0 !important;
+
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow:none !important;
+  border:0 !important;
+  outline:0 !important;
+
+  color: rgba(212,170,90,.78);
+  font-family:"Cinzel", serif;
+  font-size:12px;
+  letter-spacing:1px;
+  text-transform: uppercase;
+  line-height:1;
+}
+
+/* Mobile: micro respiro */
+@media (max-width:560px){
+  body.login .login-divider{ margin:16px 0 14px; }
+}
+/* OR USE – opzione 2: elegante ma visibile */
+body.login .login-divider span{
+  font-size: 9.5px;              /* più piccolo */
+  letter-spacing: 1.8px;          /* più “inciso” */
+  opacity: .65;                   /* meno invadente */
+}
+/* === ARCHIVE: CTA in stile Telegram (solo colore) === */
+.archive-btn--telegram{
+  background: linear-gradient(135deg,#229ED9 0%, #1C8ACB 55%, #187AB8 100%);
+}
+
+/* Non cambia il tuo effetto scintillante: al massimo un micro boost */
+.archive-btn--telegram:hover{
+  filter: brightness(1.05);
+}
+
+/* Badge: niente cerchio, solo plane bianco */
+.tg-badge--img{
+  background: transparent !important;
+  box-shadow: none !important;
+  border: 0 !important;
+  padding: 0 !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tg-plane-img{
+  display: block;
+  width: 18px;
+  height: 18px;
+}
+/* =========================================================
+   PATCH DEFINITIVA: CTA "ACQUISTA CONTENUTI" BLU TELEGRAM
+   - override forte (vince sui background gold !important)
+   - shine hover su desktop
+   - shine continuo su mobile (touch)
+   ========================================================= */
+
+/* 1) Colore blu Telegram (stesso feel del login) */
+body.archive .archive-btn--cta2.archive-btn--telegram{
+  background: linear-gradient(180deg, #4aa3ff, #2a7df0) !important;
+  color: rgba(255,255,255,.95) !important;
+
+  /* glow blu (lascia tutte le animazioni/effetti già presenti) */
+  box-shadow:
+    0 30px 100px rgba(0,0,0,.55),
+    0 0 0 1px rgba(74,163,255,.22),
+    0 0 60px rgba(42,125,240,.28),
+    inset 0 1px 0 rgba(255,255,255,.30) !important;
+}
+
+/* 2) Hover/focus: identico effetto, solo blu */
+body.archive .archive-btn--cta2.archive-btn--telegram:hover,
+body.archive .archive-btn--cta2.archive-btn--telegram:focus,
+body.archive .archive-btn--cta2.archive-btn--telegram:focus-visible{
+  filter: brightness(1.05);
+  box-shadow:
+    0 34px 110px rgba(0,0,0,.58),
+    0 0 0 3px rgba(74,163,255,.14),
+    0 0 34px rgba(42,125,240,.22),
+    inset 0 1px 0 rgba(255,255,255,.34) !important;
+}
+
+/* 3) Pulsazione lenta (versione blu) SOLO per questo bottone */
+@keyframes softGlowBlue{
+  0%,100%{
+    box-shadow:
+      0 30px 100px rgba(0,0,0,.55),
+      0 0 44px rgba(74,163,255,.18);
+  }
+  50%{
+    box-shadow:
+      0 30px 100px rgba(0,0,0,.55),
+      0 0 78px rgba(42,125,240,.30);
+  }
+}
+
+body.archive .archive-btn--cta2.archive-btn--telegram{
+  animation: softGlowBlue 4.5s ease-in-out infinite;
+}
+
+/* 4) Shine: su desktop resta "on hover" (come ora) */
+body.archive .archive-btn--cta2.archive-btn--telegram::before{
+  /* manteniamo il tuo shine, ma un filo più "ice" */
+  background: linear-gradient(120deg,
+    transparent 30%,
+    rgba(255,255,255,.26) 46%,
+    transparent 62%
+  );
+}
+
+/* 5) Mobile: shine SEMPRE attivo (touch devices) */
+@keyframes tgShineSweep{
+  0%   { transform: translateX(-40%) rotate(12deg); }
+  100% { transform: translateX(40%) rotate(12deg); }
+}
+
+/* Target vero mobile/touch (meglio di solo max-width) */
+@media (hover: none) and (pointer: coarse){
+  body.archive .archive-btn--cta2.archive-btn--telegram::before{
+    transition: none !important;
+    animation: tgShineSweep 2.8s ease-in-out infinite;
+  }
+  /* evita “tap highlight” e micro flash */
+  body.archive .archive-btn--cta2.archive-btn--telegram{
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* 6) Icona PNG: assicurati che non venga “sporcata” da vecchie regole */
+body.archive .archive-btn--cta2.archive-btn--telegram .tg-badge--img{
+  background: transparent !important;
+  box-shadow: none !important;
+  border: 0 !important;
+}
+/* =========================================================
+   LOGIN – ALLINEAMENTO SPAZI TELEGRAM ↔ OR USE ↔ VIP CODE
+   ========================================================= */
+
+/* Spazio sotto il bottone Telegram */
+body.login .login-form.tg-login{
+  margin-bottom: 12px !important;
+}
+
+/* OR USE: distanza bilanciata sopra e sotto */
+body.login .login-divider{
+  margin-top: 12px !important;
+  margin-bottom: 16px;
+}
+
+/* Se il testo di stato Telegram è vuoto, non deve occupare spazio */
+#tgStatus:empty{
+  display: none !important;
+}
+/* =========================================================
+   LOGIN – SPAZI COERENTI TRA TELEGRAM / OR USE / VIP CODE
+   ========================================================= */
+
+/* 1️⃣ Uniformiamo lo spacing usando GAP, non margin */
+body.login .login-card {
+  display: flex;
+  flex-direction: column;
+  gap: 18px; /* ← questo è lo spazio “master” */
+}
+
+/* 2️⃣ Rimuoviamo spacing locali che falsano i confronti */
+body.login .login-form.tg-login {
+  margin: 0 !important;
+}
+
+body.login .login-divider {
+  margin: 0 !important;
+}
+
+/* 3️⃣ Se il testo di stato Telegram è vuoto, non deve occupare spazio */
+#tgStatus:empty {
+  display: none !important;
+}
+/* =========================================================
+   LOGIN — CTA "BECOME A VIP"
+   ========================================================= */
+body.login .vip-cta{
+  width: 100%;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255,255,255,.10);
+  text-align: center;
+}
+
+body.login .vip-cta-title{
+  font-family: "Cinzel", serif;
+  font-size: 10.5px;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: rgba(212,170,90,.70);
+  margin: 0 0 10px 0;
+}
+
+/* bottone premium outline */
+body.login .vip-cta-btn{
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 13px 16px;
+  border-radius: 16px;
+
+  background: rgba(0,0,0,.18);
+  border: 1px solid rgba(212,170,90,.55);
+  color: rgba(212,170,90,.95);
+
+  font-weight: 900;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  text-decoration: none;
+
+  box-shadow:
+    0 14px 50px rgba(0,0,0,.35),
+    0 0 0 1px rgba(212,170,90,.12),
+    0 0 26px rgba(212,170,90,.10),
+    inset 0 1px 0 rgba(255,255,255,.08);
+
+  transition: transform .12s ease, filter .18s ease, box-shadow .18s ease, background .18s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body.login .vip-cta-btn:hover{
+  transform: translateY(-1px);
+  background: rgba(212,170,90,.08);
+  filter: brightness(1.02);
+  box-shadow:
+    0 18px 70px rgba(0,0,0,.42),
+    0 0 0 3px rgba(212,170,90,.10),
+    0 0 34px rgba(212,170,90,.14),
+    inset 0 1px 0 rgba(255,255,255,.10);
+}
+
+body.login .vip-cta-btn:active{
+  transform: translateY(1px);
+}
+
+/* focus accessibilità */
+body.login .vip-cta-btn:focus,
+body.login .vip-cta-btn:focus-visible{
+  outline: none;
+  box-shadow:
+    0 18px 70px rgba(0,0,0,.42),
+    0 0 0 3px rgba(212,170,90,.16),
+    0 0 40px rgba(212,170,90,.18),
+    inset 0 1px 0 rgba(255,255,255,.12);
+}
+/* =========================================
+   FAVORITES — CUORE IDENTICO (NO EMOJI)
+   FOTO + VIDEO
+   ========================================= */
+
+.fav-btn{
+  position:absolute;
+  right:12px;
+  bottom:12px;
+
+  width:44px;
+  height:44px;
+  border-radius:999px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border:1px solid rgba(255,255,255,.18);
+  background: rgba(0,0,0,.35);
+  color: rgba(255,255,255,.78);
+
+  cursor:pointer;
+  padding:0;
+  line-height:0;
+
+  -webkit-tap-highlight-color: transparent;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+/* SVG cuore */
+.fav-btn .heart-icon{
+  width:18px;
+  height:18px;
+  display:block;
+}
+
+/* outline */
+.fav-btn .heart-icon path{
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+/* attivo */
+.fav-btn.is-on{
+  background: rgba(212,170,90,.28);
+  border-color: rgba(212,170,90,.45);
+  color: rgba(212,170,90,.95);
+}
+
+.fav-btn.is-on .heart-icon path{
+  fill: currentColor;
+}
+/* =========================================================
+   ORDINA — FIX DEFINITIVO (desktop + mobile)
+   DOM: .sort-panel .sort-row  (photos)
+        .sheet__row            (videos)
+   Obiettivo:
+   - Testo a destra
+   - Pallino a destra, stesso allineamento
+   - Pallino grande e uguale su mobile/desktop (custom radio)
+   - Pannello più stretto su desktop (come vuoi tu)
+   ========================================================= */
+
+.gallery-actions{
+  position: relative;
+}
+
+/* ---------- POPOVER (FOTO) ---------- */
+.sort-panel{
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+
+  width: 260px;              /* base */
+  max-width: calc(100vw - 24px);
+  padding: 12px 12px 10px;
+
+  border-radius: 14px;
+  border: 1px solid rgba(212,170,90,.22);
+  background:
+    radial-gradient(600px 220px at 50% 0%, rgba(255,255,255,.10), transparent 60%),
+    linear-gradient(180deg, rgba(20,20,24,.96), rgba(10,10,14,.96));
+  box-shadow:
+    0 26px 90px rgba(0,0,0,.70),
+    0 0 0 1px rgba(212,170,90,.10),
+    0 0 26px rgba(212,170,90,.12);
+
+  z-index: 12000;
+  transform-origin: top right;
+  animation: popIn .16s ease-out;
+}
+
+@keyframes popIn{
+  from{ opacity:0; transform: translateY(-6px) scale(.98); }
+  to{ opacity:1; transform: translateY(0) scale(1); }
+}
+
+/* 👉 DESKTOP: dimezza/assottiglia il popover */
+@media (min-width: 900px){
+  .sort-panel{
+    width: 210px;            /* più stretto SOLO desktop */
+  }
+}
+
+/* Titoli MOSTRA / ORDINE */
+.sort-panel .sort-title,
+.sheet__label{
+  font-family: "Cinzel", serif;
+  font-size: 10px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: rgba(212,170,90,.78);
+  margin: 0 0 6px 0;
+  text-align: right;
+  width: 100%;
+}
+
+/* Divider */
+.sort-divider{
+  height: 1px;
+  margin: 10px 0;
+  background: rgba(255,255,255,.10);
+}
+
+/* ---------- RIGHE (FOTO: .sort-row) ---------- */
+.sort-panel .sort-row{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;   /* tutto a destra */
+  gap: 10px;                   /* spazio testo ↔ pallino */
+  padding: 6px 0;
+
+  font-size: 12.5px;
+  color: rgba(234,234,234,.88);
+  cursor: pointer;
+}
+
+/* testo */
+.sort-panel .sort-row > span{
+  text-align: right;
+  white-space: nowrap;
+  line-height: 1.15;
+}
+
+/* ---------- RIGHE (VIDEO: .sheet__row) ---------- */
+.sheet__row{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 6px 0;
+}
+
+.sheet__row > span{
+  text-align: right;
+  white-space: nowrap;
+  line-height: 1.15;
+}
+
+/* =========================================================
+   RADIO CUSTOM (UGUALE SU iPhone/Android/Desktop)
+   - NIENTE transform scale
+   - Dimensione controllata
+   ========================================================= */
+
+/* stessa regola per entrambi */
+.sort-panel .sort-row > input[type="radio"],
+.sheet__row > input[type="radio"]{
+  -webkit-appearance: none;
+  appearance: none;
+
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+
+  border: 2px solid rgba(255,255,255,.55);
+  background: transparent;
+
+  margin: 0;
+  padding: 0;
+  flex: 0 0 auto;
+
+  display: inline-grid;
+  place-content: center;
+}
+
+/* pallino interno quando checked */
+.sort-panel .sort-row > input[type="radio"]::before,
+.sheet__row > input[type="radio"]::before{
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  transform: scale(0);
+  transition: transform .12s ease-out;
+  background: rgba(212,170,90,1);
+}
+
+.sort-panel .sort-row > input[type="radio"]:checked::before,
+.sheet__row > input[type="radio"]:checked::before{
+  transform: scale(1);
+}
+
+/* hover/focus (desktop) */
+.sort-panel .sort-row:hover > input[type="radio"],
+.sheet__row:hover > input[type="radio"]{
+  border-color: rgba(212,170,90,.75);
+}
+
+.sort-panel .sort-row > input[type="radio"]:focus-visible,
+.sheet__row > input[type="radio"]:focus-visible{
+  outline: 2px solid rgba(212,170,90,.55);
+  outline-offset: 2px;
+}
+
+/* MOBILE: un filo più grande (così non sembra minuscolo) */
+@media (max-width: 560px){
+  .sort-panel{
+    width: 240px;
+  }
+
+  .sort-panel .sort-row > input[type="radio"],
+  .sheet__row > input[type="radio"]{
+    width: 18px;
+    height: 18px;
+  }
+
+  .sort-panel .sort-row > input[type="radio"]::before,
+  .sheet__row > input[type="radio"]::before{
+    width: 9px;
+    height: 9px;
+  }
+}
+/* =========================================================
+   ORDINA — POPOVER PIÙ PICCOLO SOLO DESKTOP
+   ========================================================= */
+
+/* Desktop / laptop */
+@media (min-width: 900px){
+  .sort-panel{
+    width: 190px !important;      /* prova 180–210 */
+    min-width: 0 !important;
+    padding: 10px 10px 8px !important;
+  }
+
+  /* Se vuoi anche meno “aria” tra le righe */
+  .sort-panel .sort-row{
+    padding: 5px 0 !important;
+    gap: 8px !important;
+  }
+
+  /* Titoli MOSTRA/ORDINE un filo più compatti */
+  .sort-panel .sort-title{
+    margin-bottom: 4px !important;
+  }
+
+  .sort-divider{
+    margin: 8px 0 !important;
+  }
+}
+/* ===============================
+   ORDINA — WIDTH DESKTOP ONLY
+   =============================== */
+
+@media (min-width: 1024px){
+  .sort-panel{
+    width: 260px;      /* larghezza reale e pulita */
+    min-width: unset;
+  }
+}
+/* =========================================================
+   POPUP ORDINA: COMPATTO (niente spazio nero a sinistra)
+   - Desktop: larghezza “a contenuto”, allineato alla colonna testi
+   - Testo + pallino a destra
+   ========================================================= */
+
+.sort-panel{
+  /* la chiave: non deve essere “larga” per forza */
+  width: fit-content !important;
+  min-width: 0 !important;
+  max-width: 320px !important;     /* sicurezza */
+  padding: 12px 14px 10px !important;
+}
+
+/* le righe NON devono essere 100% (è quello che crea il vuoto) */
+.sort-panel .sort-row,
+.sort-panel .sort-opt{
+  width: auto !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important; /* tutto a destra */
+  gap: 10px !important;
+  padding: 6px 0 !important;
+}
+
+/* testo a destra, non si espande */
+.sort-panel .sort-row > span,
+.sort-panel .sort-opt > span{
+  flex: 0 0 auto !important;
+  text-align: right !important;
+  white-space: nowrap !important;
+  line-height: 1.15 !important;
+  margin: 0 !important;
+}
+
+/* pallino subito dopo il testo */
+.sort-panel .sort-row > input[type="radio"],
+.sort-panel .sort-opt > input[type="radio"]{
+  flex: 0 0 auto !important;
+  margin: 0 !important;
+  transform: scale(1) !important;  /* desktop normale */
+  transform-origin: center !important;
+  accent-color: rgba(212,170,90,1) !important;
+}
+
+/* titoli MOSTRA / ORDINE a destra */
+.sort-panel .sort-title{
+  text-align: right !important;
+  width: 100% !important;
+}
+/* =========================================================
+   MOBILE: rendi il popup ORDINA IDENTICO al desktop
+   ========================================================= */
+@media (max-width: 560px){
+
+  .sort-panel{
+    width: fit-content !important;
+    min-width: 0 !important;
+    max-width: 92vw !important;     /* sicurezza: non esce dallo schermo */
+    padding: 12px 14px 10px !important;
+    right: 0 !important;
+    left: auto !important;
+  }
+
+  .sort-panel .sort-row,
+  .sort-panel .sort-opt{
+    width: auto !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 10px !important;
+    padding: 6px 0 !important;
+  }
+
+  .sort-panel .sort-row > span,
+  .sort-panel .sort-opt > span{
+    flex: 0 0 auto !important;
+    text-align: right !important;
+    white-space: nowrap !important;
+    line-height: 1.15 !important;
+    margin: 0 !important;
+  }
+
+  .sort-panel .sort-row > input[type="radio"],
+  .sort-panel .sort-opt > input[type="radio"]{
+    flex: 0 0 auto !important;
+    margin: 0 !important;
+
+    /* IMPORTANTISSIMO: pallini uguali al desktop */
+    transform: scale(1) !important;
+    -webkit-transform: scale(1) !important;
+
+    transform-origin: center !important;
+    accent-color: rgba(212,170,90,1) !important;
+  }
+
+  .sort-panel .sort-title{
+    text-align: right !important;
+    width: 100% !important;
+  }
+}
+/* =========================================================
+   FIX: CTA Telegram nelle pagine Foto/Video (gallery-cta)
+   - stessa palette del bottone archive
+   - ma PIÙ SOTTILE (altezza/padding ridotti)
+   ========================================================= */
+
+body.gallery .gallery-cta > a.archive-btn--telegram{
+  /* rende il bottone più sottile */
+  height: auto !important;
+  min-height: 0 !important;
+  padding: 6px 18px !important;   /* <- qui controlli lo "spessore" */
+  border-radius: 999px !important;
+
+  /* forza layout pulito */
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 2px !important;
+
+  /* stesso stile Telegram di archive */
+  background: linear-gradient(180deg, #4aa3ff, #2a7df0) !important;
+  color: rgba(255,255,255,.95) !important;
+
+  box-shadow:
+    0 30px 100px rgba(0,0,0,.55),
+    0 0 0 1px rgba(74,163,255,.22),
+    0 0 60px rgba(42,125,240,.28),
+    inset 0 1px 0 rgba(255,255,255,.30) !important;
+
+  /* importantissimo: se qualche regola alza la riga */
+  line-height: 1.1 !important;
+}
+
+body.gallery .gallery-cta > a.archive-btn--telegram .cta-title{
+  line-height: 1.1 !important;
+  margin: 0 !important;
+}
+
+body.gallery .gallery-cta > a.archive-btn--telegram .cta-sub{
+  line-height: 1.1 !important;
+  margin: 0 !important;
+}
+/* =========================================================
+   FIX MOBILE: CTA Telegram in GALLERY (photos/videos)
+   - centra title + subtitle + icona
+   - evita “icona a sinistra” o wrap brutto su mobile
+   ========================================================= */
+
+body.gallery .gallery-cta a.archive-btn--telegram{
+  /* struttura */
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+
+  /* “più sottile” (altezza più elegante) */
+  padding:10px 18px;
+  gap:4px;
+
+  /* importante: evita layout strani */
+  line-height:1.1;
+}
+
+/* Titolo sempre centrato */
+body.gallery .gallery-cta a.archive-btn--telegram .cta-title{
+  display:block;
+  width:100%;
+  text-align:center;
+}
+
+/* Sottotitolo: centrato + gestisce bene wrap */
+body.gallery .gallery-cta a.archive-btn--telegram .cta-sub{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  flex-wrap:wrap;
+  text-align:center;
+  width:100%;
+}
+
+/* “Telegram + icona” sempre in linea e centrati */
+body.gallery .gallery-cta a.archive-btn--telegram .tg-inline{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  white-space:nowrap;
+}
+
+body.gallery .gallery-cta a.archive-btn--telegram .tg-badge--img{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+
+body.gallery .gallery-cta a.archive-btn--telegram .tg-plane-img{
+  display:block;
+  width:16px;
+  height:16px;
+}
+
+/* Mobile: ancora più “slim” */
+@media (max-width: 560px){
+  body.gallery .gallery-cta a.archive-btn--telegram{
+    padding:8px 14px;
+    gap:3px;
+  }
+  body.gallery .gallery-cta a.archive-btn--telegram .cta-title{
+    letter-spacing:.12em;
+  }
+}
+/* =========================================================
+   CTA GALLERY – FIX MOBILE
+   Riduce leggermente il testo per stare su UNA riga
+   ========================================================= */
+
+@media (max-width: 560px){
+  body.gallery .gallery-cta .cta-sub{
+    font-size: 13px;       /* prima era ~14.5 / 15 */
+    letter-spacing: .01em;
+    line-height: 1.1;
+    white-space: nowrap;   /* forza UNA riga */
+  }
+
+  body.gallery .gallery-cta .cta-title{
+    font-size: 14px;       /* opzionale, armonizza */
+  }
+}
+/* FIX: shine non sborda (mobile) */
+body.archive .archive-btn--cta2.archive-btn--telegram{
+  overflow: hidden !important;
+  border-radius: 16px !important;
+  isolation: isolate;
+}
+
+body.archive .archive-btn--cta2.archive-btn--telegram::before,
+body.archive .archive-btn--cta2.archive-btn--telegram::after{
+  border-radius: inherit !important;
+}
+
+/* Safari iOS: clipping duro (se ancora sborda) */
+@supports (-webkit-touch-callout: none){
+  body.archive .archive-btn--cta2.archive-btn--telegram{
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
+  }
+  body.archive .archive-btn--cta2.archive-btn--telegram::before{
+    inset: -15% -25% !important; /* invece di -40% -60% */
   }
 }
